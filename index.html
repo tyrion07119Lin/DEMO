@@ -1,1 +1,1597 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>DUDUPAY 跨品牌行動端 App - 互動原型 DEMO</title>
+  <style>
+    :root {
+      --primary: #1E40AF;
+      --primary-light: #3B82F6;
+      --accent: #F59E0B;
+      --bg: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --text: #0F172A;
+      --text-muted: #64748B;
+      --border: #E2E8F0;
+      --green: #10B981;
+      --red: #EF4444;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+    
+    body {
+      background-color: #0B0F19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--text);
+    }
 
+    /* 頂部情境切換控制器 (會議展示用) */
+    .control-header {
+      background: rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(10px);
+      width: 100%;
+      padding: 12px 10px;
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .control-panel {
+      display: flex;
+      gap: 8px;
+      max-width: 480px;
+      width: 100%;
+      overflow-x: auto;
+      padding-bottom: 2px;
+    }
+    .ctrl-btn {
+      flex: 1;
+      padding: 8px 12px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 20px;
+      background: rgba(255,255,255,0.05);
+      color: #94A3B8;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      text-align: center;
+    }
+    .ctrl-btn.active {
+      background: var(--primary-light);
+      color: white;
+      border-color: var(--primary-light);
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }
+
+    /* 手機外框容器 */
+    .phone-wrapper {
+      margin: 20px 0 40px 0;
+      width: 390px;
+      height: 844px;
+      background: var(--bg);
+      border-radius: 48px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 0 10px #1E293B;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    @media (max-width: 500px) {
+      body { background-color: var(--bg); }
+      .phone-wrapper {
+        margin: 0;
+        width: 100vw;
+        height: calc(100vh - 60px);
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+
+    /* 頂部虛擬動態島與狀態列 */
+    .status-bar {
+      height: 44px;
+      background: var(--card-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 24px;
+      font-size: 13px;
+      font-weight: 600;
+      z-index: 20;
+      flex-shrink: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.03);
+    }
+    .status-bar .notch {
+      width: 100px;
+      height: 22px;
+      background: #000;
+      border-radius: 20px;
+    }
+
+    /* App 常駐導航列（右上角推播通知） */
+    .app-top-header {
+      height: 48px;
+      background: white;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      z-index: 15;
+    }
+    .app-brand {
+      font-size: 18px;
+      font-weight: 900;
+      color: var(--primary);
+      letter-spacing: 0.5px;
+    }
+    .bell-icon-btn {
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .bell-badge {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background: var(--red);
+      color: white;
+      font-size: 10px;
+      font-weight: 800;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid white;
+    }
+
+    /* App 主要滑動內容區 */
+    .app-screen {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: none;
+      padding-bottom: 80px;
+    }
+    .app-screen.active { display: block; }
+
+    /* 通用卡片設計 */
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 14px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+      border: 1px solid var(--border);
+    }
+    .card-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* 行銷輪播 Banner */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 148px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 12px rgba(30, 64, 175, 0.15);
+    }
+    .carousel-track {
+      display: flex;
+      width: 300%;
+      height: 100%;
+      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .carousel-slide {
+      width: 33.333%;
+      height: 100%;
+      padding: 16px 18px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: white;
+      cursor: pointer;
+    }
+    .carousel-indicators {
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+    }
+    .indicator-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.4);
+      transition: all 0.2s;
+    }
+    .indicator-dot.active {
+      width: 14px;
+      border-radius: 8px;
+      background: white;
+    }
+
+    /* 徽章與按鈕 */
+    .badge { padding: 3px 8px; border-radius: 6px; font-size: 11px; font-weight: 700; display: inline-block; }
+    .badge-blue { background: #DBEAFE; color: #1E40AF; }
+    .badge-orange { background: #FEF3C7; color: #B45309; }
+    .badge-green { background: #D1FAE5; color: #065F46; }
+    .badge-gray { background: #F1F5F9; color: #475569; }
+
+    .btn-main {
+      width: 100%;
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 12px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: opacity 0.2s;
+    }
+    .btn-main:active { opacity: 0.85; }
+    .btn-sec {
+      background: #EFF6FF;
+      color: var(--primary);
+      border: 1px solid #BFDBFE;
+    }
+
+    /* 個人中心列表群組 (List Group) */
+    .profile-list-group {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+    .profile-list-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      cursor: pointer;
+      font-size: 13px;
+      font-weight: 600;
+      color: #1E293B;
+    }
+    .profile-list-item:last-child {
+      border-bottom: none;
+    }
+    .profile-list-item:active {
+      background: #F8FAFC;
+    }
+    .profile-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .profile-item-right {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* 特約商訂單列表樣式 */
+    .order-filter-bar {
+      display: flex;
+      gap: 6px;
+      overflow-x: auto;
+      padding-bottom: 6px;
+      margin-bottom: 10px;
+    }
+    .filter-chip {
+      padding: 5px 12px;
+      border-radius: 16px;
+      background: white;
+      border: 1px solid var(--border);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      white-space: nowrap;
+      cursor: pointer;
+    }
+    .filter-chip.active {
+      background: #1E293B;
+      color: white;
+      border-color: #1E293B;
+    }
+    .order-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .order-card:active {
+      background: #F8FAFC;
+    }
+    .order-checkbox-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .order-card-content {
+      flex: 1;
+    }
+
+    /* 批次請款操作橫條 */
+    .payout-action-bar {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* 表單元件樣式 */
+    .form-group-row {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      text-align: left;
+    }
+    .form-label {
+      width: 90px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      flex-shrink: 0;
+    }
+    .form-label .req {
+      color: #EF4444;
+      margin-left: 2px;
+    }
+    .form-input-box {
+      flex: 1;
+    }
+    .form-control {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid #CBD5E1;
+      border-radius: 6px;
+      font-size: 13px;
+      outline: none;
+      background: #FFFFFF;
+    }
+    .form-control:focus {
+      border-color: var(--primary);
+    }
+    .form-control:disabled {
+      background: #F1F5F9;
+      color: #64748B;
+    }
+
+    /* 底部導覽列 (頁籤調整：首頁/帳務、帳務資訊、我的帳戶) */
+    .nav-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding-bottom: 8px;
+      z-index: 30;
+    }
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      flex: 1;
+    }
+    .nav-item.active { color: var(--primary); }
+    .nav-icon { font-size: 20px; margin-bottom: 2px; }
+
+    /* 彈窗遮罩 */
+    .modal-overlay {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      z-index: 200;
+      padding: 20px;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 24px;
+      padding: 22px 18px;
+      width: 100%;
+      max-height: 88%;
+      overflow-y: auto;
+      text-align: center;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      animation: popIn 0.25s ease-out;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .barcode-line {
+      height: 44px;
+      background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 7px);
+      margin: 8px 0;
+      border-radius: 4px;
+    }
+    .qr-box {
+      width: 170px;
+      height: 170px;
+      background: #F8FAFC;
+      margin: 16px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px dashed #94A3B8;
+      border-radius: 16px;
+      font-size: 12px;
+      color: #64748B;
+    }
+
+    /* 登入彈窗 */
+    .auth-tab-bar {
+      display: flex;
+      border-radius: 12px;
+      background: #F1F5F9;
+      padding: 4px;
+      margin-bottom: 16px;
+    }
+    .auth-tab-btn {
+      flex: 1;
+      padding: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      background: transparent;
+      color: var(--text-muted);
+    }
+    .auth-tab-btn.active {
+      background: white;
+      color: var(--primary);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .auth-input-group {
+      text-align: left;
+      margin-bottom: 12px;
+    }
+    .auth-input-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+      display: block;
+    }
+    .auth-input {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      outline: none;
+    }
+
+    /* 推播項目 */
+    .notif-item {
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      margin-bottom: 10px;
+      text-align: left;
+      background: white;
+      position: relative;
+    }
+    .notif-item.unread {
+      background: #F0FDF4;
+      border-color: #BBF7D0;
+    }
+    .notif-item.unread::before {
+      content: '';
+      position: absolute;
+      top: 14px;
+      right: 12px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 頂部情境切換控制器 (無商城版：3 個情境) -->
+  <header class="control-header">
+    <div class="control-panel">
+      <button class="ctrl-btn active" onclick="switchScene('guest')">1. 未登入首頁</button>
+      <button class="ctrl-btn" onclick="switchScene('consumer')">2. 消費者帳務</button>
+      <button class="ctrl-btn" onclick="switchScene('merchant')">3. 特約商工作台</button>
+    </div>
+  </header>
+
+  <!-- 手機外框 -->
+  <main class="phone-wrapper">
+    <div class="status-bar">
+      <span>09:41</span>
+      <div class="notch"></div>
+      <span>5G 85%</span>
+    </div>
+
+    <!-- App 常駐導航列（右上角推播通知） -->
+    <div class="app-top-header">
+      <div class="app-brand" id="headerTitle">DUDUPAY</div>
+      <div class="bell-icon-btn" onclick="openModal('notification-modal')">
+        🔔
+        <span class="bell-badge" id="bellBadge">2</span>
+      </div>
+    </div>
+
+    <!-- ==================== 情境 1：未登入 (Guest) ==================== -->
+    <section id="screen-guest" class="app-screen active">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <span style="font-size: 13px; color: var(--text-muted); font-weight: 600;">金融服務 · 智慧生活</span>
+        <button class="badge badge-blue" style="padding: 6px 14px; font-size: 12px; border: none; cursor: pointer;" onclick="openAuthModal('consumer')">登入 / 註冊</button>
+      </div>
+
+      <!-- 輪播橫幅 -->
+      <div class="carousel-container" onclick="openAuthModal('consumer')">
+        <div class="carousel-track" id="bannerTrack">
+          <div class="carousel-slide" style="background: linear-gradient(135deg, #1E3A8A, #3B82F6);">
+            <div>
+              <span class="badge" style="background: rgba(255,255,255,0.25); color: white; margin-bottom: 6px;">老客戶專屬</span>
+              <div style="font-size: 16px; font-weight: 800; line-height: 1.3;">綁定東元資融 / BOBOPAY<br>一鍵掌握分期進度與繳款</div>
+            </div>
+            <div style="font-size: 11px; opacity: 0.9; display: flex; justify-content: space-between; align-items: center;">
+              <span>登入實名核驗享專屬服務</span>
+              <span style="background: white; color: #1E3A8A; padding: 3px 8px; border-radius: 12px; font-weight: 700;">前往綁定 ›</span>
+            </div>
+          </div>
+          <div class="carousel-slide" style="background: linear-gradient(135deg, #047857, #10B981);">
+            <div>
+              <span class="badge" style="background: rgba(255,255,255,0.25); color: white; margin-bottom: 6px;">信用提額</span>
+              <div style="font-size: 16px; font-weight: 800; line-height: 1.3;">按期繳款累積優質信用<br>定期享自動調升可用額度</div>
+            </div>
+            <div style="font-size: 11px; opacity: 0.9; display: flex; justify-content: space-between; align-items: center;">
+              <span>完成實名核驗，即享專屬額度</span>
+              <span style="background: white; color: #047857; padding: 3px 8px; border-radius: 12px; font-weight: 700;">查看說明 ›</span>
+            </div>
+          </div>
+          <div class="carousel-slide" style="background: linear-gradient(135deg, #B45309, #F59E0B);">
+            <div>
+              <span class="badge" style="background: rgba(255,255,255,0.25); color: white; margin-bottom: 6px;">官方重要公告</span>
+              <div style="font-size: 16px; font-weight: 800; line-height: 1.3;">防範分期扣款詐騙手法<br>官方繳款通知請認明 App 推播</div>
+            </div>
+            <div style="font-size: 11px; opacity: 0.9; display: flex; justify-content: space-between; align-items: center;">
+              <span>東元資融關心您的資金安全</span>
+              <span style="background: white; color: #B45309; padding: 3px 8px; border-radius: 12px; font-weight: 700;">詳情點擊 ›</span>
+            </div>
+          </div>
+        </div>
+        <div class="carousel-indicators">
+          <div class="indicator-dot active" id="dot0"></div>
+          <div class="indicator-dot" id="dot1"></div>
+          <div class="indicator-dot" id="dot2"></div>
+        </div>
+      </div>
+
+      <!-- 核心功能介紹卡片 -->
+      <div class="card">
+        <div class="card-title">三大核心整合功能</div>
+        <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 6px;">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <div style="font-size: 24px; width: 36px; text-align: center;">📑</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">跨品牌合約一次歸戶</div>
+              <div style="font-size: 11px; color: var(--text-muted);">東元資融、BOBOPAY 與 DUDUPAY 案件一覽無遺</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border);">
+            <div style="font-size: 24px; width: 36px; text-align: center;">🏪</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">四大超商智慧合併繳款</div>
+              <div style="font-size: 11px; color: var(--text-muted);">多筆帳單合併產出一組手機條碼，告別紙本繳費單</div>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px; padding: 8px 0;">
+            <div style="font-size: 24px; width: 36px; text-align: center;">🔔</div>
+            <div>
+              <div style="font-size: 13px; font-weight: 700;">繳款即時推播防逾期</div>
+              <div style="font-size: 11px; color: var(--text-muted);">到期日前溫和提醒，按期繳費同步累積信用積分</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 引導登入卡片 -->
+      <div class="card" style="text-align: center; padding: 22px; border-top: 3px solid var(--primary);">
+        <div style="font-size: 26px; margin-bottom: 6px;">🔐</div>
+        <div style="font-size: 15px; font-weight: 800; color: var(--text);">已有線下購買或想開啟服務</div>
+        <p style="font-size: 12px; color: var(--text-muted); margin: 6px 0 16px 0; line-height: 1.5;">
+          登入驗證完成，即可開啟繳款即時推播提醒、合約查繳與信用額度功能。
+        </p>
+        <button class="btn-main" onclick="openAuthModal('consumer')">登入 / 註冊認領帳戶</button>
+      </div>
+    </section>
+
+    <!-- ==================== 情境 2：消費者生活帳務中心 (Consumer) ==================== -->
+    <section id="screen-consumer" class="app-screen">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div>
+          <div style="font-size: 11px; color: var(--text-muted);">歡迎回來</div>
+          <div style="font-size: 16px; font-weight: 800;">嘟嘟 您好 👋</div>
+        </div>
+        <span class="badge badge-green">L2 實名已認證</span>
+      </div>
+
+      <!-- 跨品牌帳單聚合卡片 -->
+      <div class="card" style="border-left: 4px solid var(--primary);">
+        <div class="card-title">本期跨品牌合併應繳 (9/20 截止) <span style="color: #EF4444; font-size: 11px;">剩 6 天</span></div>
+        <div style="font-size: 28px; font-weight: 900; color: var(--text); margin: 6px 0 14px 0;">
+          NT$ 8,250
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-main" style="flex: 1; font-size: 13px;" onclick="openModal('barcode-modal')">
+            🏪 出示超商條碼
+          </button>
+          <button class="btn-main btn-sec" style="flex: 1; font-size: 13px;" onclick="copyVirtualAccount()">
+            ATM / 轉帳
+          </button>
+        </div>
+      </div>
+
+      <div class="card-title">進行中合約明細 (3 筆)</div>
+      
+      <!-- 合約 1：東元資融 -->
+      <div class="card" style="padding: 12px; margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span class="badge badge-blue">東元資融</span>
+          <span style="font-weight: 800; font-size: 13px;">NT$ 4,500</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">光陽機車分期 (期數: 14/24)</div>
+        <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 45,000 ｜ 正常履約中</div>
+      </div>
+
+      <!-- 合約 2：BOBOPAY -->
+      <div class="card" style="padding: 12px; margin-bottom: 8px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span class="badge badge-orange">BOBOPAY</span>
+          <span style="font-weight: 800; font-size: 13px;">NT$ 2,250</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">毛孩動物醫院醫療費 (期數: 4/12)</div>
+        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between;">
+          <span>剩餘本金：NT$ 18,000</span>
+          <a href="javascript:void(0)" style="color: var(--primary); text-decoration: none; font-weight: 600;" onclick="alert('調閱電子合約 PDF：BOBO-2026-MED0892')">調閱合約</a>
+        </div>
+      </div>
+
+      <!-- 合約 3：DUDUPAY -->
+      <div class="card" style="padding: 12px; margin-bottom: 14px;">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+          <span class="badge badge-green">DUDUPAY</span>
+          <span style="font-weight: 800; font-size: 13px;">NT$ 1,500</span>
+        </div>
+        <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">生活設備消費分期 (期數: 1/3)</div>
+        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between;">
+          <span>剩餘本金：NT$ 3,000</span>
+          <a href="javascript:void(0)" style="color: var(--primary); text-decoration: none; font-weight: 600;" onclick="alert('提前結清試算：NT$ 2,950 (已扣除未到期利息)')">結清試算</a>
+        </div>
+      </div>
+
+      <!-- PBPCM 信用養成區 -->
+      <div class="card" style="background: #F8FAFC;">
+        <div class="card-title">DUDUPAY 履約信用額度</div>
+        <div style="display: flex; justify-content: space-between; align-items: baseline;">
+          <span style="font-size: 18px; font-weight: 800; color: var(--primary);">NT$ 45,000</span>
+          <span style="font-size: 11px; color: var(--text-muted);">總額度 $60,000</span>
+        </div>
+        <div style="background: #E2E8F0; height: 6px; border-radius: 4px; margin: 8px 0;">
+          <div style="background: var(--green); width: 75%; height: 100%; border-radius: 4px;"></div>
+        </div>
+        <div style="font-size: 11px; color: var(--text-muted);">⭐ 連續準時繳納滿 6 期，系統將自動提額 20%</div>
+      </div>
+    </section>
+
+    <!-- ==================== 情境 2-B：我的帳戶 (Profile 個人中心 - NEW) ==================== -->
+    <section id="screen-profile" class="app-screen">
+      <!-- 個人資料卡片 -->
+      <div class="card" style="background: linear-gradient(135deg, #1E3A8A, #2563EB); color: white; margin-bottom: 16px;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <div>
+            <div style="font-size: 20px; font-weight: 900; margin-bottom: 2px;">嘟嘟</div>
+            <div style="font-size: 12px; opacity: 0.85;">0912-***-678</div>
+          </div>
+          <span class="badge" style="background: rgba(255,255,255,0.25); color: white;">L2 實名已認證</span>
+        </div>
+        <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; font-size: 11px;">
+          <span>會員編號：#DUDU-20268809</span>
+          <span>已綁定合約：3 筆</span>
+        </div>
+      </div>
+
+      <!-- 帳戶與常用設定 -->
+      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">帳戶與個人設定</div>
+      <div class="profile-list-group">
+        <div class="profile-list-item" onclick="alert('開啟個人資料修改（更新通訊地址、常用 Email、緊急聯絡人）')">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">👤</span>
+            <span>個人資料修改</span>
+          </div>
+          <div class="profile-item-right">
+            <span>修改 ›</span>
+          </div>
+        </div>
+        <div class="profile-list-item" onclick="alert('開啟電子發票載具設定：目前設定【//ABC1234】')">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">🧾</span>
+            <span>電子發票載具設定</span>
+          </div>
+          <div class="profile-item-right">
+            <span style="font-family: monospace; font-weight: 700;">//ABC1234 ›</span>
+          </div>
+        </div>
+        <div class="profile-list-item" onclick="copyReferralCode()">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">🎁</span>
+            <span>我的專屬推薦碼</span>
+          </div>
+          <div class="profile-item-right">
+            <span class="badge badge-orange" style="font-family: monospace; font-size: 11px;">DUDU888 (複製)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 安全與通知設定 -->
+      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">安全性與通知</div>
+      <div class="profile-list-group">
+        <div class="profile-list-item" onclick="alert('生物辨識狀態：Face ID 已啟用')">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">🔒</span>
+            <span>生物辨識與密碼修改</span>
+          </div>
+          <div class="profile-item-right">
+            <span>Face ID ›</span>
+          </div>
+        </div>
+        <div class="profile-list-item" onclick="alert('繳款通知設定：已開啟推播與簡訊通知')">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">🔔</span>
+            <span>繳款通知偏好設定</span>
+          </div>
+          <div class="profile-item-right">
+            <span style="color: var(--green); font-weight: 700;">已開啟 ›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 服務與條款 -->
+      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">服務與條款</div>
+      <div class="profile-list-group">
+        <div class="profile-list-item" onclick="alert('開啟在線智能客服')">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">💬</span>
+            <span>常見問題與客服協助</span>
+          </div>
+          <div class="profile-item-right">
+            <span>專人諮詢 ›</span>
+          </div>
+        </div>
+        <div class="profile-list-item" onclick="alert('檢視使用者服務條款與隱私權保護政策')">
+          <div class="profile-item-left">
+            <span style="font-size: 16px;">📄</span>
+            <span>使用者條款與隱私政策</span>
+          </div>
+          <div class="profile-item-right">
+            <span>檢視 ›</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 登出按鈕 -->
+      <button class="btn-main" style="background: white; color: #EF4444; border: 1px solid #FECACA; margin-top: 10px;" onclick="executeLogout()">
+        安全登出帳號
+      </button>
+    </section>
+
+    <!-- ==================== 情境 3：特約商登入 (Merchant) ==================== -->
+    <section id="screen-merchant" class="app-screen">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div>
+          <div style="font-size: 11px; color: var(--text-muted);">特約商門市工作台</div>
+          <div style="font-size: 16px; font-weight: 800;">冠宇重機精品 🏍️</div>
+        </div>
+        <button class="badge badge-orange" style="padding: 4px 10px; font-size: 11px; border: none; cursor: pointer;" onclick="switchScene('consumer')">切換個人視角 👤</button>
+      </div>
+
+      <!-- 營運總覽看板 -->
+      <div class="card" style="background: #1E293B; color: white;">
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 4px;">今日營業概況 (2026/09/14)</div>
+        <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 11px; opacity: 0.7;">今日交易</div>
+            <div style="font-size: 18px; font-weight: 800;">NT$ 38,600</div>
+          </div>
+          <div>
+            <div style="font-size: 11px; opacity: 0.7;">待請款總額</div>
+            <div style="font-size: 18px; font-weight: 800; color: #FBBF24;" id="totalPendingPayoutHeader">NT$ 86,000</div>
+          </div>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn-main" style="background: #3B82F6; flex: 1; font-size: 12px; padding: 10px;" onclick="openModal('qr-modal')">📲 出示收款碼</button>
+          <button class="btn-main" style="background: #059669; flex: 1; font-size: 12px; padding: 10px;" onclick="openModal('manual-entry-modal')">📝 人工送件進件</button>
+        </div>
+      </div>
+
+      <!-- 訂單管理標題與排序 -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+        <div style="font-size: 14px; font-weight: 800; color: var(--text);">📋 門市分期訂單管理</div>
+        <button id="sortBtn" onclick="toggleSortOrder()" style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer;">
+          📅 日期：由新到舊 ⤓
+        </button>
+      </div>
+
+      <!-- 狀態篩選 Chips -->
+      <div class="order-filter-bar">
+        <div class="filter-chip active" onclick="filterOrders('ALL', this)">全部 (<span id="countAll">5</span>)</div>
+        <div class="filter-chip" onclick="filterOrders('READY_REQUEST', this)">🔵 待請款 (<span id="countReady">2</span>)</div>
+        <div class="filter-chip" onclick="filterOrders('PENDING_PAYOUT', this)">🟡 待撥款 (<span id="countPending">1</span>)</div>
+        <div class="filter-chip" onclick="filterOrders('PAID', this)">🟢 已撥款 (<span id="countPaid">2</span>)</div>
+        <div class="filter-chip" onclick="filterOrders('NEED_DOC', this)">🟠 審查補件/照會 (<span id="countNeed">0</span>)</div>
+      </div>
+
+      <!-- 待請款專屬批次請款操作橫條 -->
+      <div id="payoutActionBar" class="payout-action-bar" style="display: none;">
+        <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
+          <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" style="width: 16px; height: 16px;">
+          <span>全選 (<span id="selectedCount">0</span> 筆)</span>
+        </label>
+        <button class="badge" style="background: var(--primary); color: white; border: none; padding: 6px 14px; font-size: 12px; border-radius: 16px; cursor: pointer;" onclick="submitSelectedPayout()">
+          申請撥款 (<span id="selectedAmountText">NT$ 0</span>)
+        </button>
+      </div>
+
+      <!-- 訂單列表容器 -->
+      <div id="orderListContainer"></div>
+    </section>
+
+    <!-- 底部原生 Tab 導覽列 (頁籤調整：首頁/帳務、帳務資訊、我的帳戶/特約商台) -->
+    <nav class="nav-bar" id="appNavBar">
+      <div class="nav-item active" id="tab-home" onclick="handleNavClick('home')">
+        <div class="nav-icon">🏠</div>
+        <span>首頁/帳務</span>
+      </div>
+      <div class="nav-item" id="tab-billing" onclick="handleNavClick('billing')">
+        <div class="nav-icon">🧾</div>
+        <span>帳務資訊</span>
+      </div>
+      <div class="nav-item" id="tab-profile" onclick="handleNavClick('profile')">
+        <div class="nav-icon" id="profileTabIcon">👤</div>
+        <span id="profileTabText">我的帳戶</span>
+      </div>
+    </nav>
+
+    <!-- ==================== 彈窗集合 ==================== -->
+
+    <!-- 1. 人工送件表單彈窗 -->
+    <div id="manual-entry-modal" class="modal-overlay" onclick="closeModal('manual-entry-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <h3 style="font-size: 16px; font-weight: 800; color: #1E293B;">📝 填寫人工送件分期訂單</h3>
+          <span style="font-size: 13px; color: var(--text-muted); cursor: pointer;" onclick="closeModal('manual-entry-modal')">✕ 關閉</span>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">產品名稱</div>
+          <div class="form-input-box">
+            <input type="text" id="manualProdName" class="form-control" placeholder="產品名稱" value="Öhlins 後避震升級套組">
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">產品金額<span class="req">*</span></div>
+          <div class="form-input-box">
+            <input type="number" id="manualProdAmount" class="form-control" placeholder="產品金額" value="36000" oninput="calculateInstallmentAmount()">
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">分期期數<span class="req">*</span></div>
+          <div class="form-input-box">
+            <select id="manualInstallment" class="form-control" onchange="calculateInstallmentAmount()">
+              <option value="">請選取..</option>
+              <option value="3">3 期</option>
+              <option value="6">6 期</option>
+              <option value="12" selected>12 期</option>
+              <option value="24">24 期</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">期付金額</div>
+          <div class="form-input-box">
+            <input type="text" id="manualInstallmentAmount" class="form-control" placeholder="期付金額" value="NT$ 3,000 /期" disabled>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: #DC2626; margin: -4px 0 12px 90px; line-height: 1.3;">
+          ※以上利率僅供參考，實際繳款金額已核准後通知為準
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">手機門號<span class="req">*</span></div>
+          <div class="form-input-box">
+            <input type="tel" id="manualPhone" class="form-control" placeholder="手機號碼" value="0918765432">
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">E-MAIL</div>
+          <div class="form-input-box">
+            <input type="email" id="manualEmail" class="form-control" placeholder="E-mail" value="customer@example.com">
+          </div>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">可接聽時間<span class="req">*</span></div>
+          <div class="form-input-box">
+            <select id="manualCallTime" class="form-control">
+              <option value="">請選取..</option>
+              <option value="ANY" selected>隨時皆可</option>
+              <option value="AM">平日上午 09:00 - 12:00</option>
+              <option value="PM">平日下午 14:00 - 18:00</option>
+              <option value="NIGHT">平日晚間 18:00 - 20:00</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="margin: 12px 0; font-size: 11px; color: #475569; display: flex; align-items: flex-start; gap: 6px;">
+          <input type="checkbox" id="manualAgreement" checked style="margin-top: 2px;">
+          <label for="manualAgreement">
+            <span style="color: #EF4444;">*</span> 我已詳細閱讀並充分了解、同意「<a href="javascript:void(0)" style="color: #F59E0B; text-decoration: none;">隱私權政策</a>」及「<a href="javascript:void(0)" style="color: #F59E0B; text-decoration: none;">行動身分識別服務使用者約定條款</a>」
+          </label>
+        </div>
+
+        <button class="btn-main" style="background: #059669; margin-top: 8px;" onclick="submitManualOrder()">送出人工審查申請</button>
+      </div>
+    </div>
+
+    <!-- 2. 推播訊息中心彈窗 -->
+    <div id="notification-modal" class="modal-overlay" onclick="closeModal('notification-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 16px; font-weight: 800;">🔔 推播訊息通知</h3>
+          <span style="font-size: 11px; color: var(--primary); font-weight: 700; cursor: pointer;" onclick="markAllNotificationsAsRead()">全部標為已讀</span>
+        </div>
+        <div id="notifList">
+          <div class="notif-item unread">
+            <div style="font-size: 11px; color: #EF4444; font-weight: 800; margin-bottom: 2px;">⚠️ 繳款提醒 · 東元資融</div>
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 2px;">光陽機車分期本期應繳 NT$ 4,500</div>
+            <div style="font-size: 11px; color: var(--text-muted);">距截止日剩餘 6 天，點此立即開啟超商條碼繳納。</div>
+            <div style="font-size: 10px; color: #94A3B8; margin-top: 4px;">今天 09:30</div>
+          </div>
+          <div class="notif-item unread">
+            <div style="font-size: 11px; color: var(--green); font-weight: 800; margin-bottom: 2px;">✅ 審查核准 · DUDUPAY</div>
+            <div style="font-size: 13px; font-weight: 700; margin-bottom: 2px;">履約信用額度自動調升通知</div>
+            <div style="font-size: 11px; color: var(--text-muted);">感謝您按時履約！系統已為您調升可用額度至 NT$ 45,000。</div>
+            <div style="font-size: 10px; color: #94A3B8; margin-top: 4px;">昨天 15:40</div>
+          </div>
+        </div>
+        <button class="btn-main" style="margin-top: 8px;" onclick="closeModal('notification-modal')">關閉</button>
+      </div>
+    </div>
+
+    <!-- 3. 整合式登入彈窗 -->
+    <div id="auth-modal" class="modal-overlay" onclick="closeModal('auth-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 6px;">歡迎登入 DUDUPAY</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">請選擇您的身分進入整合服務平台</p>
+        <div class="auth-tab-bar">
+          <button class="auth-tab-btn active" id="authTabConsumer" onclick="switchAuthTab('consumer')">一般消費者</button>
+          <button class="auth-tab-btn" id="authTabMerchant" onclick="switchAuthTab('merchant')">特約商夥伴 🏍️</button>
+        </div>
+        <div id="consumerAuthFields">
+          <div class="auth-input-group">
+            <label class="auth-input-label">手機號碼</label>
+            <input type="tel" class="auth-input" placeholder="0912-345-678" value="0912345678">
+          </div>
+          <div class="auth-input-group">
+            <label class="auth-input-label">登入密碼 / 簡訊 OTP</label>
+            <input type="password" class="auth-input" placeholder="請輸入密碼" value="password123">
+          </div>
+          <button class="btn-main" onclick="executeLogin('consumer')">以消費者身分登入</button>
+        </div>
+        <div id="merchantAuthFields" style="display: none;">
+          <div class="auth-input-group">
+            <label class="auth-input-label">特約商統一編號</label>
+            <input type="text" class="auth-input" placeholder="8 位數公司統編" value="54321987">
+          </div>
+          <div class="auth-input-group">
+            <label class="auth-input-label">特約商帳號 / 手機號碼</label>
+            <input type="text" class="auth-input" placeholder="店長/負責人手機" value="0988776655">
+          </div>
+          <div class="auth-input-group">
+            <label class="auth-input-label">密碼</label>
+            <input type="password" class="auth-input" placeholder="請輸入特約商管理密碼" value="admin123">
+          </div>
+          <button class="btn-main" style="background: #1E293B;" onclick="executeLogin('merchant')">以特約商身分登入工作台</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. 超商條碼彈窗 -->
+    <div id="barcode-modal" class="modal-overlay" onclick="closeModal('barcode-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 style="font-size: 16px; margin-bottom: 6px;">🏪 跨品牌合併繳費條碼</h3>
+        <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px;">支援 7-11 / 全家 / 萊爾富 / OK 刷碼</p>
+        <div style="font-size: 22px; font-weight: 900; color: var(--primary); margin-bottom: 12px;">應繳總額：NT$ 8,250</div>
+        <div class="barcode-line"></div>
+        <div style="font-size: 11px; letter-spacing: 2px; font-family: monospace;">98210920485921</div>
+        <div class="barcode-line"></div>
+        <div style="font-size: 11px; letter-spacing: 2px; font-family: monospace;">00000825000000</div>
+        <div class="barcode-line"></div>
+        <div style="font-size: 11px; letter-spacing: 2px; font-family: monospace;">26092014029148</div>
+        <p style="font-size: 11px; color: #EF4444; margin-top: 12px;">已自動將螢幕亮度提升至 100%，繳款完成請保留收據</p>
+        <button class="btn-main" style="margin-top: 14px;" onclick="closeModal('barcode-modal')">關閉</button>
+      </div>
+    </div>
+
+    <!-- 5. 特約商門市收款碼彈窗 -->
+    <div id="qr-modal" class="modal-overlay" onclick="closeModal('qr-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()">
+        <h3 style="font-size: 16px; margin-bottom: 4px;">冠宇重機精品 · 收款碼</h3>
+        <p style="font-size: 12px; color: var(--text-muted);">請顧客開啟 DUDUPAY App 掃碼結帳</p>
+        <div class="qr-box">
+          <div style="text-align: center;">
+            <div style="font-size: 40px; margin-bottom: 4px;">📷</div>
+            <div>[ 門市動態收款 QR CODE ]</div>
+            <div style="font-size: 10px; color: #94A3B8; margin-top: 4px;">時效性：04:59</div>
+          </div>
+        </div>
+        <div style="font-size: 12px; font-weight: 700; margin-bottom: 12px;">門市代號：#TC-88902</div>
+        <button class="btn-main" onclick="closeModal('qr-modal')">完成並返回</button>
+      </div>
+    </div>
+
+    <!-- 6. 特約商訂單詳情彈窗 -->
+    <div id="order-detail-modal" class="modal-overlay" onclick="closeModal('order-detail-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 16px; font-weight: 800;">📄 分期案件與訂單詳情</h3>
+          <span style="font-size: 12px; color: var(--text-muted); cursor: pointer;" onclick="closeModal('order-detail-modal')">✕ 關閉</span>
+        </div>
+        <div id="orderDetailContent"></div>
+        <button class="btn-main" style="margin-top: 14px;" onclick="closeModal('order-detail-modal')">關閉視窗</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    let currentAuthState = 'GUEST';
+
+    // 特約商訂單資料庫
+    let mockOrders = [
+      {
+        id: "DD20260914-01",
+        date: "2026/09/14 11:20",
+        customer: "陳 O 華",
+        item: "碳纖維排氣管升級套件",
+        amount: 38000,
+        installments: "12 期",
+        status: "READY_REQUEST",
+        statusText: "🔵 待請款",
+        feeRate: "2.5%",
+        payoutAmount: 37050,
+        note: "現場已完成安裝交貨，顧客已核銷。特約商可勾選申請撥款。",
+        selected: false
+      },
+      {
+        id: "DD20260913-05",
+        date: "2026/09/13 16:10",
+        customer: "黃 O 傑",
+        item: "鍛造輕量後搖臂組",
+        amount: 48000,
+        installments: "12 期",
+        status: "READY_REQUEST",
+        statusText: "🔵 待請款",
+        feeRate: "2.5%",
+        payoutAmount: 46800,
+        note: "現場已完成安裝交貨，顧客已核銷。特約商可勾選申請撥款。",
+        selected: false
+      },
+      {
+        id: "DD20260910-02",
+        date: "2026/09/10 14:15",
+        customer: "李 O 廷",
+        item: "4K 前後雙鏡行車記錄器",
+        amount: 4788,
+        installments: "12 期",
+        status: "PENDING_PAYOUT",
+        statusText: "🟡 待撥款 (審核已核准)",
+        feeRate: "2.5%",
+        payoutAmount: 4668,
+        note: "金流組已核准請款，預計於下個撥款日 (09/16) 自動匯入玉山銀行帳戶。",
+        selected: false
+      },
+      {
+        id: "DD20260905-01",
+        date: "2026/09/05 09:30",
+        customer: "張 O 豪",
+        item: "全罩式碳纖維安全帽",
+        amount: 8800,
+        installments: "6 期",
+        status: "PAID",
+        statusText: "🟢 已撥款",
+        feeRate: "2.0%",
+        payoutAmount: 8624,
+        note: "已於 2026/09/07 撥入玉山銀行指定帳戶 (尾號 8821)。",
+        selected: false
+      },
+      {
+        id: "DD20260902-03",
+        date: "2026/09/02 16:50",
+        customer: "林 O 宇",
+        item: "鍛造輪框前後組",
+        amount: 45000,
+        installments: "24 期",
+        status: "PAID",
+        statusText: "🟢 已撥款",
+        feeRate: "3.0%",
+        payoutAmount: 43650,
+        note: "已於 2026/09/05 撥入玉山銀行指定帳戶 (尾號 8821)。",
+        selected: false
+      }
+    ];
+
+    let currentFilter = 'ALL';
+    let sortAscending = false;
+
+    // 動態計算期付金額
+    function calculateInstallmentAmount() {
+      const amount = parseFloat(document.getElementById('manualProdAmount').value) || 0;
+      const periods = parseInt(document.getElementById('manualInstallment').value) || 0;
+      const display = document.getElementById('manualInstallmentAmount');
+      if (amount > 0 && periods > 0) {
+        const perMonth = Math.round(amount / periods);
+        display.value = `NT$ ${perMonth.toLocaleString()} /期`;
+      } else {
+        display.value = '期付金額';
+      }
+    }
+
+    // 提交人工送件表單
+    function submitManualOrder() {
+      const prodName = document.getElementById('manualProdName').value.trim();
+      const prodAmount = parseFloat(document.getElementById('manualProdAmount').value) || 0;
+      const periods = document.getElementById('manualInstallment').value;
+      const phone = document.getElementById('manualPhone').value.trim();
+      const email = document.getElementById('manualEmail').value.trim();
+      const callTime = document.getElementById('manualCallTime').value;
+      const agree = document.getElementById('manualAgreement').checked;
+
+      if (!prodAmount || !periods || !phone || !callTime) {
+        alert('請完整填寫標記紅星 (*) 之必填項目！');
+        return;
+      }
+      if (!agree) {
+        alert('請先閱讀並同意隱私權政策與約定條款！');
+        return;
+      }
+
+      const newOrderId = `DD20260914-0${mockOrders.length + 1}`;
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
+
+      mockOrders.unshift({
+        id: newOrderId,
+        date: dateStr,
+        customer: phone.substring(0, 4) + '***' + phone.substring(7),
+        item: prodName || '未填寫品名',
+        amount: prodAmount,
+        installments: `${periods} 期`,
+        status: "NEED_DOC",
+        statusText: "🟠 審查照會中",
+        feeRate: "2.5%",
+        payoutAmount: Math.round(prodAmount * 0.975),
+        note: `特約商人工進件成功！接聽時間：${callTime}。東元資融徵審員將儘速進行照會電訪。`,
+        selected: false
+      });
+
+      closeModal('manual-entry-modal');
+      alert(`🎉 人工送件申請已送出！\n案件編號：${newOrderId}\n已同步傳送至東元資融後台進行徵信審查。`);
+      filterOrders('NEED_DOC', document.querySelectorAll('.filter-chip')[4]);
+    }
+
+    // 渲染訂單列表與待請款批次操作列
+    function renderOrders() {
+      const container = document.getElementById('orderListContainer');
+      const payoutBar = document.getElementById('payoutActionBar');
+      if (!container) return;
+
+      document.getElementById('countAll').innerText = mockOrders.length;
+      document.getElementById('countReady').innerText = mockOrders.filter(o => o.status === 'READY_REQUEST').length;
+      document.getElementById('countPending').innerText = mockOrders.filter(o => o.status === 'PENDING_PAYOUT').length;
+      document.getElementById('countPaid').innerText = mockOrders.filter(o => o.status === 'PAID').length;
+      document.getElementById('countNeed').innerText = mockOrders.filter(o => o.status === 'NEED_DOC').length;
+
+      const pendingTotal = mockOrders.filter(o => o.status === 'READY_REQUEST').reduce((sum, o) => sum + o.amount, 0);
+      document.getElementById('totalPendingPayoutHeader').innerText = `NT$ ${pendingTotal.toLocaleString()}`;
+
+      if (currentFilter === 'READY_REQUEST') {
+        payoutBar.style.display = 'flex';
+        updateSelectedSummary();
+      } else {
+        payoutBar.style.display = 'none';
+      }
+
+      let filtered = mockOrders.filter(o => {
+        if (currentFilter === 'ALL') return true;
+        return o.status === currentFilter;
+      });
+
+      filtered.sort((a, b) => {
+        const dateA = new Date(a.date).getTime();
+        const dateB = new Date(b.date).getTime();
+        return sortAscending ? (dateA - dateB) : (dateB - dateA);
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 30px; font-size: 12px; color: var(--text-muted);">查無該狀態的訂單</div>`;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(o => {
+        let badgeClass = 'badge-gray';
+        if (o.status === 'PAID') badgeClass = 'badge-green';
+        else if (o.status === 'PENDING_PAYOUT') badgeClass = 'badge-orange';
+        else if (o.status === 'NEED_DOC') badgeClass = 'badge-orange';
+        else if (o.status === 'READY_REQUEST') badgeClass = 'badge-blue';
+
+        const checkboxHtml = (currentFilter === 'READY_REQUEST') ? `
+          <div class="order-checkbox-wrap" onclick="event.stopPropagation()">
+            <input type="checkbox" ${o.selected ? 'checked' : ''} onchange="toggleOrderSelect('${o.id}', this)" style="width: 18px; height: 18px; cursor: pointer;">
+          </div>
+        ` : '';
+
+        html += `
+          <div class="order-card" onclick="viewOrderDetail('${o.id}')">
+            ${checkboxHtml}
+            <div class="order-card-content">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <span style="font-size: 11px; font-weight: 700; color: var(--text-muted);">${o.id}</span>
+                <span class="badge ${badgeClass}">${o.statusText}</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: baseline;">
+                <div style="font-size: 13px; font-weight: 800;">${o.customer} ｜ ${o.item}</div>
+                <div style="font-size: 14px; font-weight: 900; color: var(--text);">NT$ ${o.amount.toLocaleString()}</div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+                <span>期數：${o.installments}</span>
+                <span>📅 ${o.date}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function toggleOrderSelect(id, checkbox) {
+      const order = mockOrders.find(o => o.id === id);
+      if (order) order.selected = checkbox.checked;
+      updateSelectedSummary();
+    }
+
+    function toggleSelectAll(selectAllCheckbox) {
+      const readyOrders = mockOrders.filter(o => o.status === 'READY_REQUEST');
+      readyOrders.forEach(o => o.selected = selectAllCheckbox.checked);
+      renderOrders();
+    }
+
+    function updateSelectedSummary() {
+      const readyOrders = mockOrders.filter(o => o.status === 'READY_REQUEST');
+      const selected = readyOrders.filter(o => o.selected);
+      const totalSelectedAmt = selected.reduce((sum, o) => sum + o.amount, 0);
+
+      document.getElementById('selectedCount').innerText = selected.length;
+      document.getElementById('selectedAmountText').innerText = `NT$ ${totalSelectedAmt.toLocaleString()}`;
+      
+      const selectAll = document.getElementById('selectAllCheckbox');
+      if (selectAll) {
+        selectAll.checked = readyOrders.length > 0 && selected.length === readyOrders.length;
+      }
+    }
+
+    function submitSelectedPayout() {
+      const selected = mockOrders.filter(o => o.status === 'READY_REQUEST' && o.selected);
+      if (selected.length === 0) {
+        alert('請先勾選欲申請撥款之待請款案件！');
+        return;
+      }
+
+      const totalAmt = selected.reduce((sum, o) => sum + o.amount, 0);
+      const confirmPayout = confirm(`確認將選取的 ${selected.length} 筆案件 (總計 NT$ ${totalAmt.toLocaleString()}) 送出申請撥款？`);
+      if (confirmPayout) {
+        selected.forEach(o => {
+          o.status = 'PENDING_PAYOUT';
+          o.statusText = '🟡 待撥款 (審核中)';
+          o.selected = false;
+          o.note = '特約商已於線上送出請款，東元資融金流審核中。';
+        });
+
+        alert(`🎉 成功送出 ${selected.length} 筆請款申請！\n案件狀態已變更為【待撥款】，金流組將於排程日完成入帳作業。`);
+        filterOrders('PENDING_PAYOUT', document.querySelectorAll('.filter-chip')[2]);
+      }
+    }
+
+    function filterOrders(filter, el) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderOrders();
+    }
+
+    function toggleSortOrder() {
+      sortAscending = !sortAscending;
+      const btn = document.getElementById('sortBtn');
+      btn.innerText = sortAscending ? '📅 日期：由舊到新 ⤊' : '📅 日期：由新到舊 ⤓';
+      renderOrders();
+    }
+
+    function viewOrderDetail(id) {
+      const order = mockOrders.find(o => o.id === id);
+      if (!order) return;
+
+      const content = document.getElementById('orderDetailContent');
+      content.innerHTML = `
+        <div style="background: #F8FAFC; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 11px; color: var(--text-muted);">訂單編號</span>
+            <span style="font-size: 12px; font-weight: 700;">${order.id}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 11px; color: var(--text-muted);">下單時間</span>
+            <span style="font-size: 12px;">${order.date}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="font-size: 11px; color: var(--text-muted);">客戶識別</span>
+            <span style="font-size: 12px; font-weight: 700;">${order.customer}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="font-size: 11px; color: var(--text-muted);">分期方案</span>
+            <span style="font-size: 12px; color: var(--primary); font-weight: 700;">DUDUPAY ${order.installments}</span>
+          </div>
+        </div>
+
+        <div style="border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
+          <div style="font-size: 12px; font-weight: 800; margin-bottom: 6px;">購買商品項目</div>
+          <div style="font-size: 13px; margin-bottom: 4px;">${order.item}</div>
+          <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 6px;">
+            <span>訂單總金額</span>
+            <span style="font-weight: 800;">NT$ ${order.amount.toLocaleString()}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+            <span>手續費扣抵 (${order.feeRate})</span>
+            <span>- NT$ ${(order.amount - order.payoutAmount).toLocaleString()}</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; color: var(--green); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px;">
+            <span>預計實撥淨額</span>
+            <span>NT$ ${order.payoutAmount.toLocaleString()}</span>
+          </div>
+        </div>
+
+        <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px; font-size: 11px; color: #1E40AF; line-height: 1.4;">
+          <strong>審查與金流備註：</strong><br>${order.note}
+        </div>
+      `;
+
+      openModal('order-detail-modal');
+    }
+
+    // 複製推薦碼
+    function copyReferralCode() {
+      navigator.clipboard.writeText('DUDU888').then(() => {
+        alert('🎉 專屬推薦碼【DUDU888】已複製！\n好友透過您的推薦碼完成首次實名綁定，雙方皆可享折抵優惠。');
+      }).catch(() => {
+        alert('您的專屬推薦碼為：DUDU888');
+      });
+    }
+
+    // 登出帳號
+    function executeLogout() {
+      if (confirm('確定要登出 DUDUPAY 帳號嗎？')) {
+        currentAuthState = 'GUEST';
+        switchScene('guest');
+        alert('您已安全登出。');
+      }
+    }
+
+    // 導覽點擊處理 (頁籤更新：首頁/帳務、帳務資訊、我的帳戶/特約商台)
+    function handleNavClick(tab) {
+      if (tab === 'home' || tab === 'billing') {
+        if (currentAuthState === 'GUEST') switchScene('guest');
+        else if (currentAuthState === 'MERCHANT') switchScene('merchant');
+        else switchScene('consumer');
+      } else if (tab === 'profile') {
+        if (currentAuthState === 'GUEST') {
+          openAuthModal('consumer');
+        } else if (currentAuthState === 'MERCHANT') {
+          switchScene('merchant');
+        } else {
+          // 消費者切換至「我的帳戶」頁面
+          document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+          document.getElementById('screen-profile').classList.add('active');
+          document.getElementById('tab-profile').classList.add('active');
+          document.getElementById('headerTitle').innerText = '我的帳戶';
+        }
+      }
+    }
+
+    function switchScene(scene) {
+      document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.ctrl-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      if (scene === 'guest') {
+        currentAuthState = 'GUEST';
+        document.getElementById('screen-guest').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[0].classList.add('active');
+        document.getElementById('tab-home').classList.add('active');
+        document.getElementById('headerTitle').innerText = 'DUDUPAY';
+      } else if (scene === 'consumer') {
+        currentAuthState = 'CONSUMER';
+        document.getElementById('screen-consumer').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[1].classList.add('active');
+        document.getElementById('tab-home').classList.add('active');
+        document.getElementById('headerTitle').innerText = 'DUDUPAY';
+      } else if (scene === 'merchant') {
+        currentAuthState = 'MERCHANT';
+        document.getElementById('screen-merchant').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[2].classList.add('active');
+        document.getElementById('tab-profile').classList.add('active');
+        document.getElementById('headerTitle').innerText = '特約商工作台';
+        renderOrders();
+      }
+
+      updateNavBarForAuth();
+    }
+
+    function updateNavBarForAuth() {
+      const profileText = document.getElementById('profileTabText');
+      const profileIcon = document.getElementById('profileTabIcon');
+      if (currentAuthState === 'MERCHANT') {
+        profileText.innerText = '特約商台';
+        profileIcon.innerText = '🏍️';
+      } else {
+        profileText.innerText = '我的帳戶';
+        profileIcon.innerText = '👤';
+      }
+    }
+
+    function openAuthModal(defaultRole) {
+      switchAuthTab(defaultRole);
+      openModal('auth-modal');
+    }
+
+    function switchAuthTab(role) {
+      const btnConsumer = document.getElementById('authTabConsumer');
+      const btnMerchant = document.getElementById('authTabMerchant');
+      const fldConsumer = document.getElementById('consumerAuthFields');
+      const fldMerchant = document.getElementById('merchantAuthFields');
+
+      if (role === 'consumer') {
+        btnConsumer.classList.add('active');
+        btnMerchant.classList.remove('active');
+        fldConsumer.style.display = 'block';
+        fldMerchant.style.display = 'none';
+      } else {
+        btnMerchant.classList.add('active');
+        btnConsumer.classList.remove('active');
+        fldMerchant.style.display = 'block';
+        fldConsumer.style.display = 'none';
+      }
+    }
+
+    function executeLogin(role) {
+      closeModal('auth-modal');
+      if (role === 'consumer') {
+        alert('🎉 登入成功！已為您載入跨品牌合約帳單。');
+        switchScene('consumer');
+      } else {
+        alert('🎉 歡迎特約商【冠宇重機精品】！已登入門市行動工作台。');
+        switchScene('merchant');
+      }
+    }
+
+    function markAllNotificationsAsRead() {
+      document.querySelectorAll('.notif-item').forEach(el => el.classList.remove('unread'));
+      document.getElementById('bellBadge').style.display = 'none';
+      alert('已將所有推播訊息標示為已讀！');
+    }
+
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function copyVirtualAccount() {
+      navigator.clipboard.writeText('9823488219923').then(() => {
+        alert('已複製玉山銀行專屬虛擬帳號：98234-8821-9923！');
+      }).catch(() => {
+        alert('專屬虛擬帳號：98234-8821-9923 (玉山銀行 808)');
+      });
+    }
+
+    // 輪播 Banner 自動輪播
+    let currentSlide = 0;
+    const totalSlides = 3;
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      const track = document.getElementById('bannerTrack');
+      if (track) {
+        track.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
+        for (let i = 0; i < totalSlides; i++) {
+          const dot = document.getElementById(`dot${i}`);
+          if (dot) dot.classList.toggle('active', i === currentSlide);
+        }
+      }
+    }
+    setInterval(nextSlide, 3500);
+
+    // 初始渲染
+    renderOrders();
+  </script>
+</body>
+</html>
