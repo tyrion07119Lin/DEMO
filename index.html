@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>DUDUPAY 跨品牌行動端 App - 互動原型 DEMO</title>
+  <title>東元資融 行動端 App - 互動原型 DEMO</title>
   <style>
     :root {
       --primary: #1E40AF;
@@ -403,7 +403,7 @@
       color: #64748B;
     }
 
-    /* 底部導覽列 (頁籤調整：首頁/帳務、帳務資訊、我的帳戶) */
+    /* 底部導覽列 (首頁/帳務、帳務資訊、我的帳戶/特約商台) */
     .nav-bar {
       position: absolute;
       bottom: 0;
@@ -569,9 +569,9 @@
       <span>5G 85%</span>
     </div>
 
-    <!-- App 常駐導航列（右上角推播通知） -->
+    <!-- App 常駐導航列（品牌主題修改為「東元資融」） -->
     <div class="app-top-header">
-      <div class="app-brand" id="headerTitle">DUDUPAY</div>
+      <div class="app-brand" id="headerTitle">東元資融</div>
       <div class="bell-icon-btn" onclick="openModal('notification-modal')">
         🔔
         <span class="bell-badge" id="bellBadge">2</span>
@@ -693,7 +693,7 @@
 
       <div class="card-title">進行中合約明細 (3 筆)</div>
       
-      <!-- 合約 1：東元資融 -->
+      <!-- 合約 1：東元資融 (已移除調閱合約) -->
       <div class="card" style="padding: 12px; margin-bottom: 8px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-blue">東元資融</span>
@@ -703,17 +703,14 @@
         <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 45,000 ｜ 正常履約中</div>
       </div>
 
-      <!-- 合約 2：BOBOPAY -->
+      <!-- 合約 2：BOBOPAY (已移除調閱合約) -->
       <div class="card" style="padding: 12px; margin-bottom: 8px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-orange">BOBOPAY</span>
           <span style="font-weight: 800; font-size: 13px;">NT$ 2,250</span>
         </div>
         <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">毛孩動物醫院醫療費 (期數: 4/12)</div>
-        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between;">
-          <span>剩餘本金：NT$ 18,000</span>
-          <a href="javascript:void(0)" style="color: var(--primary); text-decoration: none; font-weight: 600;" onclick="alert('調閱電子合約 PDF：BOBO-2026-MED0892')">調閱合約</a>
-        </div>
+        <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 18,000 ｜ 正常履約中</div>
       </div>
 
       <!-- 合約 3：DUDUPAY -->
@@ -729,9 +726,9 @@
         </div>
       </div>
 
-      <!-- PBPCM 信用養成區 -->
+      <!-- 信用養成區 -->
       <div class="card" style="background: #F8FAFC;">
-        <div class="card-title">DUDUPAY 履約信用額度</div>
+        <div class="card-title">東元資融 履約信用額度</div>
         <div style="display: flex; justify-content: space-between; align-items: baseline;">
           <span style="font-size: 18px; font-weight: 800; color: var(--primary);">NT$ 45,000</span>
           <span style="font-size: 11px; color: var(--text-muted);">總額度 $60,000</span>
@@ -743,7 +740,7 @@
       </div>
     </section>
 
-    <!-- ==================== 情境 2-B：我的帳戶 (Profile 個人中心 - NEW) ==================== -->
+    <!-- ==================== 情境 2-B：我的帳戶 (Profile 個人中心) ==================== -->
     <section id="screen-profile" class="app-screen">
       <!-- 個人資料卡片 -->
       <div class="card" style="background: linear-gradient(135deg, #1E3A8A, #2563EB); color: white; margin-bottom: 16px;">
@@ -755,7 +752,7 @@
           <span class="badge" style="background: rgba(255,255,255,0.25); color: white;">L2 實名已認證</span>
         </div>
         <div style="margin-top: 14px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.2); display: flex; justify-content: space-between; font-size: 11px;">
-          <span>會員編號：#DUDU-20268809</span>
+          <span>會員編號：#TECO-20268809</span>
           <span>已綁定合約：3 筆</span>
         </div>
       </div>
@@ -787,7 +784,7 @@
             <span>我的專屬推薦碼</span>
           </div>
           <div class="profile-item-right">
-            <span class="badge badge-orange" style="font-family: monospace; font-size: 11px;">DUDU888 (複製)</span>
+            <span class="badge badge-orange" style="font-family: monospace; font-size: 11px;">TECO888 (複製)</span>
           </div>
         </div>
       </div>
@@ -856,7 +853,7 @@
 
       <!-- 營運總覽看板 -->
       <div class="card" style="background: #1E293B; color: white;">
-        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 4px;">今日營業概況 (2026/09/14)</div>
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 4px;">今日營業概況 (2026/09/15)</div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
           <div>
             <div style="font-size: 11px; opacity: 0.7;">今日交易</div>
@@ -905,7 +902,7 @@
       <div id="orderListContainer"></div>
     </section>
 
-    <!-- 底部原生 Tab 導覽列 (頁籤調整：首頁/帳務、帳務資訊、我的帳戶/特約商台) -->
+    <!-- 底部原生 Tab 導覽列 -->
     <nav class="nav-bar" id="appNavBar">
       <div class="nav-item active" id="tab-home" onclick="handleNavClick('home')">
         <div class="nav-icon">🏠</div>
@@ -1022,7 +1019,7 @@
             <div style="font-size: 10px; color: #94A3B8; margin-top: 4px;">今天 09:30</div>
           </div>
           <div class="notif-item unread">
-            <div style="font-size: 11px; color: var(--green); font-weight: 800; margin-bottom: 2px;">✅ 審查核准 · DUDUPAY</div>
+            <div style="font-size: 11px; color: var(--green); font-weight: 800; margin-bottom: 2px;">✅ 審查核准 · 東元資融</div>
             <div style="font-size: 13px; font-weight: 700; margin-bottom: 2px;">履約信用額度自動調升通知</div>
             <div style="font-size: 11px; color: var(--text-muted);">感謝您按時履約！系統已為您調升可用額度至 NT$ 45,000。</div>
             <div style="font-size: 10px; color: #94A3B8; margin-top: 4px;">昨天 15:40</div>
@@ -1035,7 +1032,7 @@
     <!-- 3. 整合式登入彈窗 -->
     <div id="auth-modal" class="modal-overlay" onclick="closeModal('auth-modal')">
       <div class="modal-content" onclick="event.stopPropagation()">
-        <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 6px;">歡迎登入 DUDUPAY</h3>
+        <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 6px;">歡迎登入 東元資融</h3>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">請選擇您的身分進入整合服務平台</p>
         <div class="auth-tab-bar">
           <button class="auth-tab-btn active" id="authTabConsumer" onclick="switchAuthTab('consumer')">一般消費者</button>
@@ -1091,7 +1088,7 @@
     <div id="qr-modal" class="modal-overlay" onclick="closeModal('qr-modal')">
       <div class="modal-content" onclick="event.stopPropagation()">
         <h3 style="font-size: 16px; margin-bottom: 4px;">冠宇重機精品 · 收款碼</h3>
-        <p style="font-size: 12px; color: var(--text-muted);">請顧客開啟 DUDUPAY App 掃碼結帳</p>
+        <p style="font-size: 12px; color: var(--text-muted);">請顧客開啟 App 掃碼結帳</p>
         <div class="qr-box">
           <div style="text-align: center;">
             <div style="font-size: 40px; margin-bottom: 4px;">📷</div>
@@ -1230,7 +1227,7 @@
         return;
       }
 
-      const newOrderId = `DD20260914-0${mockOrders.length + 1}`;
+      const newOrderId = `DD20260915-0${mockOrders.length + 1}`;
       const now = new Date();
       const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
@@ -1412,7 +1409,7 @@
           </div>
           <div style="display: flex; justify-content: space-between;">
             <span style="font-size: 11px; color: var(--text-muted);">分期方案</span>
-            <span style="font-size: 12px; color: var(--primary); font-weight: 700;">DUDUPAY ${order.installments}</span>
+            <span style="font-size: 12px; color: var(--primary); font-weight: 700;">東元資融 ${order.installments}</span>
           </div>
         </div>
 
@@ -1443,28 +1440,36 @@
 
     // 複製推薦碼
     function copyReferralCode() {
-      navigator.clipboard.writeText('DUDU888').then(() => {
-        alert('🎉 專屬推薦碼【DUDU888】已複製！\n好友透過您的推薦碼完成首次實名綁定，雙方皆可享折抵優惠。');
+      navigator.clipboard.writeText('TECO888').then(() => {
+        alert('🎉 專屬推薦碼【TECO888】已複製！\n好友透過您的推薦碼完成首次實名綁定，雙方皆可享折抵優惠。');
       }).catch(() => {
-        alert('您的專屬推薦碼為：DUDU888');
+        alert('您的專屬推薦碼為：TECO888');
       });
     }
 
     // 登出帳號
     function executeLogout() {
-      if (confirm('確定要登出 DUDUPAY 帳號嗎？')) {
+      if (confirm('確定要登出 東元資融 帳號嗎？')) {
         currentAuthState = 'GUEST';
         switchScene('guest');
         alert('您已安全登出。');
       }
     }
 
-    // 導覽點擊處理 (頁籤更新：首頁/帳務、帳務資訊、我的帳戶/特約商台)
+    // 導覽點擊處理 (修改：未登入點擊 billing 跳出登入提示)
     function handleNavClick(tab) {
-      if (tab === 'home' || tab === 'billing') {
+      if (tab === 'home') {
         if (currentAuthState === 'GUEST') switchScene('guest');
         else if (currentAuthState === 'MERCHANT') switchScene('merchant');
         else switchScene('consumer');
+      } else if (tab === 'billing') {
+        if (currentAuthState === 'GUEST') {
+          openAuthModal('consumer');
+        } else if (currentAuthState === 'MERCHANT') {
+          switchScene('merchant');
+        } else {
+          switchScene('consumer');
+        }
       } else if (tab === 'profile') {
         if (currentAuthState === 'GUEST') {
           openAuthModal('consumer');
@@ -1491,13 +1496,13 @@
         document.getElementById('screen-guest').classList.add('active');
         document.querySelectorAll('.ctrl-btn')[0].classList.add('active');
         document.getElementById('tab-home').classList.add('active');
-        document.getElementById('headerTitle').innerText = 'DUDUPAY';
+        document.getElementById('headerTitle').innerText = '東元資融';
       } else if (scene === 'consumer') {
         currentAuthState = 'CONSUMER';
         document.getElementById('screen-consumer').classList.add('active');
         document.querySelectorAll('.ctrl-btn')[1].classList.add('active');
         document.getElementById('tab-home').classList.add('active');
-        document.getElementById('headerTitle').innerText = 'DUDUPAY';
+        document.getElementById('headerTitle').innerText = '東元資融';
       } else if (scene === 'merchant') {
         currentAuthState = 'MERCHANT';
         document.getElementById('screen-merchant').classList.add('active');
