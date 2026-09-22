@@ -170,6 +170,34 @@
     }
     .app-screen.active { display: block; }
 
+    /* 客服浮窗懸浮按鈕 (Floating Action Button) */
+    .support-fab {
+      position: absolute;
+      bottom: 80px;
+      right: 18px;
+      background: linear-gradient(135deg, #1E40AF, #3B82F6);
+      color: white;
+      border-radius: 28px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 8px 20px rgba(30, 64, 175, 0.35);
+      cursor: pointer;
+      z-index: 40;
+      font-size: 12px;
+      font-weight: 700;
+      border: 1px solid rgba(255,255,255,0.2);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .support-fab:active {
+      transform: scale(0.94);
+      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
+    }
+    .support-fab-icon {
+      font-size: 16px;
+    }
+
     /* 通用卡片設計 */
     .card {
       background: var(--card-bg);
@@ -403,7 +431,7 @@
       color: #64748B;
     }
 
-    /* 底部導覽列 (首頁/帳務、帳務資訊、我的帳戶/特約商台) */
+    /* 底部導覽列 */
     .nav-bar {
       position: absolute;
       bottom: 0;
@@ -548,11 +576,45 @@
       border-radius: 50%;
       background: var(--red);
     }
+
+    /* 客服彈窗對話框樣式 */
+    .chat-bubble {
+      background: #F1F5F9;
+      border-radius: 12px;
+      padding: 10px 12px;
+      font-size: 12px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+      text-align: left;
+    }
+    .chat-bubble-user {
+      background: #DBEAFE;
+      color: #1E40AF;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .faq-chip {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 12px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      display: inline-block;
+      margin: 3px 2px;
+      transition: all 0.2s;
+    }
+    .faq-chip:active {
+      background: #EFF6FF;
+      border-color: #93C5FD;
+    }
   </style>
 </head>
 <body>
 
-  <!-- 頂部情境切換控制器 (無商城版：3 個情境) -->
+  <!-- 頂部情境切換控制器 -->
   <header class="control-header">
     <div class="control-panel">
       <button class="ctrl-btn active" onclick="switchScene('guest')">1. 未登入首頁</button>
@@ -569,13 +631,19 @@
       <span>5G 85%</span>
     </div>
 
-    <!-- App 常駐導航列（品牌主題修改為「東元資融」） -->
+    <!-- App 常駐導航列 -->
     <div class="app-top-header">
       <div class="app-brand" id="headerTitle">東元資融</div>
       <div class="bell-icon-btn" onclick="openModal('notification-modal')">
         🔔
         <span class="bell-badge" id="bellBadge">2</span>
       </div>
+    </div>
+
+    <!-- 客服功能常駐浮窗按鈕 (NEW) -->
+    <div class="support-fab" onclick="openModal('support-modal')">
+      <span class="support-fab-icon">🎧</span>
+      <span>在線客服</span>
     </div>
 
     <!-- ==================== 情境 1：未登入 (Guest) ==================== -->
@@ -693,7 +761,7 @@
 
       <div class="card-title">進行中合約明細 (3 筆)</div>
       
-      <!-- 合約 1：東元資融 (已移除調閱合約) -->
+      <!-- 合約 1：東元資融 -->
       <div class="card" style="padding: 12px; margin-bottom: 8px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-blue">東元資融</span>
@@ -703,14 +771,17 @@
         <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 45,000 ｜ 正常履約中</div>
       </div>
 
-      <!-- 合約 2：BOBOPAY (已移除調閱合約) -->
+      <!-- 合約 2：BOBOPAY -->
       <div class="card" style="padding: 12px; margin-bottom: 8px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-orange">BOBOPAY</span>
           <span style="font-weight: 800; font-size: 13px;">NT$ 2,250</span>
         </div>
         <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">毛孩動物醫院醫療費 (期數: 4/12)</div>
-        <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 18,000 ｜ 正常履約中</div>
+        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between;">
+          <span>剩餘本金：NT$ 18,000</span>
+          <span style="color: var(--text-muted);">正常履約中</span>
+        </div>
       </div>
 
       <!-- 合約 3：DUDUPAY -->
@@ -815,13 +886,13 @@
       <!-- 服務與條款 -->
       <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">服務與條款</div>
       <div class="profile-list-group">
-        <div class="profile-list-item" onclick="alert('開啟在線智能客服')">
+        <div class="profile-list-item" onclick="openModal('support-modal')">
           <div class="profile-item-left">
             <span style="font-size: 16px;">💬</span>
             <span>常見問題與客服協助</span>
           </div>
           <div class="profile-item-right">
-            <span>專人諮詢 ›</span>
+            <span>在線客服 ›</span>
           </div>
         </div>
         <div class="profile-list-item" onclick="alert('檢視使用者服務條款與隱私權保護政策')">
@@ -919,6 +990,48 @@
     </nav>
 
     <!-- ==================== 彈窗集合 ==================== -->
+
+    <!-- 客服浮窗對話彈窗 (NEW) -->
+    <div id="support-modal" class="modal-overlay" onclick="closeModal('support-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left; padding: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <div>
+            <h3 style="font-size: 15px; font-weight: 800; color: var(--primary);">🎧 東元資融 · 在線智能客服</h3>
+            <span style="font-size: 10px; color: var(--green); font-weight: 700;">● 客服人員在線為您服務</span>
+          </div>
+          <span style="font-size: 13px; color: var(--text-muted); cursor: pointer;" onclick="closeModal('support-modal')">✕ 關閉</span>
+        </div>
+
+        <!-- 對話視窗 -->
+        <div style="height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; padding-right: 4px;" id="chatMessageArea">
+          <div class="chat-bubble">
+            您好！我是東元資融智能服務助手 👋<br>很高興為您服務，請點選下方常見問題，或直接在下方輸入提問：
+          </div>
+        </div>
+
+        <!-- 常見快捷問題 -->
+        <div style="margin-bottom: 10px;">
+          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px;">常見快速諮詢：</div>
+          <div style="display: flex; flex-wrap: wrap;">
+            <span class="faq-chip" onclick="askQuestion('超商繳費條碼如何使用？')">如何超商繳款？</span>
+            <span class="faq-chip" onclick="askQuestion('我想申請提前結清合約')">如何申請提前結清？</span>
+            <span class="faq-chip" onclick="askQuestion('特約商請款審核需要幾天？')">特約商請款時間？</span>
+            <span class="faq-chip" onclick="askQuestion('轉接真人電話客服')">轉接真人專人</span>
+          </div>
+        </div>
+
+        <!-- 輸入欄位 -->
+        <div style="display: flex; gap: 6px;">
+          <input type="text" id="chatInput" class="form-control" placeholder="請輸入問題..." onkeypress="if(event.key === 'Enter') sendUserMessage()">
+          <button class="badge badge-blue" style="padding: 0 14px; border: none; font-size: 12px; cursor: pointer;" onclick="sendUserMessage()">發送</button>
+        </div>
+
+        <!-- 客服專線電話提示 -->
+        <div style="margin-top: 10px; text-align: center; font-size: 11px; color: var(--text-muted);">
+          客服免付費專線：<a href="tel:0800-000-888" style="color: var(--primary); font-weight: 700; text-decoration: none;">0800-000-888</a> (週一至週五 09:00 - 18:00)
+        </div>
+      </div>
+    </div>
 
     <!-- 1. 人工送件表單彈窗 -->
     <div id="manual-entry-modal" class="modal-overlay" onclick="closeModal('manual-entry-modal')">
@@ -1195,6 +1308,41 @@
     let currentFilter = 'ALL';
     let sortAscending = false;
 
+    // 客服發送問題與自動回覆邏輯
+    function askQuestion(question) {
+      appendChatMessage(question, true);
+      setTimeout(() => {
+        let reply = "感謝您的提問，目前系統已記錄。若需進一步人工核對，請於上班時間撥打 0800-000-888。";
+        if (question.includes("超商繳費")) {
+          reply = "請至「首頁/帳務」點擊「出示超商條碼」，手機螢幕將自動調至最亮，即可直接至 7-11/全家/萊爾富/OK 櫃檯出示刷碼一次繳清合併帳單。";
+        } else if (question.includes("提前結清")) {
+          reply = "進行中合約下方點擊「結清試算」，系統會即時扣減未到期遞延利息並計算手續費，可於線上直接產生專屬繳款單。";
+        } else if (question.includes("特約商請款")) {
+          reply = "特約商請款於門市工作台勾選送出後，金流組將於 1 個工作天內完成審核，並於約定結算日自動撥入受款帳戶。";
+        } else if (question.includes("真人")) {
+          reply = "正在為您轉接電話專人服務... 請直接撥打免費服務專線：0800-000-888，服務時間平日 09:00 - 18:00。";
+        }
+        appendChatMessage(reply, false);
+      }, 500);
+    }
+
+    function sendUserMessage() {
+      const input = document.getElementById('chatInput');
+      const val = input.value.trim();
+      if (!val) return;
+      askQuestion(val);
+      input.value = '';
+    }
+
+    function appendChatMessage(text, isUser) {
+      const area = document.getElementById('chatMessageArea');
+      const div = document.createElement('div');
+      div.className = isUser ? 'chat-bubble chat-bubble-user' : 'chat-bubble';
+      div.innerText = text;
+      area.appendChild(div);
+      area.scrollTop = area.scrollHeight;
+    }
+
     // 動態計算期付金額
     function calculateInstallmentAmount() {
       const amount = parseFloat(document.getElementById('manualProdAmount').value) || 0;
@@ -1456,7 +1604,7 @@
       }
     }
 
-    // 導覽點擊處理 (修改：未登入點擊 billing 跳出登入提示)
+    // 導覽點擊處理
     function handleNavClick(tab) {
       if (tab === 'home') {
         if (currentAuthState === 'GUEST') switchScene('guest');
@@ -1476,7 +1624,6 @@
         } else if (currentAuthState === 'MERCHANT') {
           switchScene('merchant');
         } else {
-          // 消費者切換至「我的帳戶」頁面
           document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
           document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
           document.getElementById('screen-profile').classList.add('active');
