@@ -16,6 +16,7 @@
       --border: #E2E8F0;
       --green: #10B981;
       --red: #EF4444;
+      --purple: #7C3AED;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
     
@@ -43,20 +44,20 @@
     }
     .control-panel {
       display: flex;
-      gap: 8px;
-      max-width: 480px;
+      gap: 6px;
+      max-width: 540px;
       width: 100%;
       overflow-x: auto;
       padding-bottom: 2px;
     }
     .ctrl-btn {
       flex: 1;
-      padding: 8px 12px;
+      padding: 8px 10px;
       border: 1px solid rgba(255,255,255,0.2);
       border-radius: 20px;
       background: rgba(255,255,255,0.05);
       color: #94A3B8;
-      font-size: 13px;
+      font-size: 12px;
       font-weight: 600;
       cursor: pointer;
       white-space: nowrap;
@@ -95,7 +96,7 @@
       }
     }
 
-    /* 頂部虛擬動態島與狀態列 */
+    /* 頂部狀態列 */
     .status-bar {
       height: 44px;
       background: var(--card-bg);
@@ -116,7 +117,7 @@
       border-radius: 20px;
     }
 
-    /* App 常駐導航列（右上角推播通知） */
+    /* App 常駐導航列 */
     .app-top-header {
       height: 48px;
       background: white;
@@ -160,7 +161,7 @@
       border: 2px solid white;
     }
 
-    /* App 主要滑動內容區 */
+    /* 滑動內容區 */
     .app-screen {
       flex: 1;
       overflow-y: auto;
@@ -170,7 +171,7 @@
     }
     .app-screen.active { display: block; }
 
-    /* 客服浮窗懸浮按鈕 (Floating Action Button) */
+    /* 客服懸浮按鈕 */
     .support-fab {
       position: absolute;
       bottom: 80px;
@@ -188,14 +189,6 @@
       font-size: 12px;
       font-weight: 700;
       border: 1px solid rgba(255,255,255,0.2);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .support-fab:active {
-      transform: scale(0.94);
-      box-shadow: 0 4px 10px rgba(30, 64, 175, 0.25);
-    }
-    .support-fab-icon {
-      font-size: 16px;
     }
 
     /* 通用卡片設計 */
@@ -270,6 +263,8 @@
     .badge-blue { background: #DBEAFE; color: #1E40AF; }
     .badge-orange { background: #FEF3C7; color: #B45309; }
     .badge-green { background: #D1FAE5; color: #065F46; }
+    .badge-purple { background: #EDE9FE; color: #6D28D9; }
+    .badge-red { background: #FEE2E2; color: #991B1B; }
     .badge-gray { background: #F1F5F9; color: #475569; }
 
     .btn-main {
@@ -295,7 +290,7 @@
       border: 1px solid #BFDBFE;
     }
 
-    /* 個人中心列表群組 (List Group) */
+    /* 個人中心列表 */
     .profile-list-group {
       background: white;
       border: 1px solid var(--border);
@@ -317,23 +312,8 @@
     .profile-list-item:last-child {
       border-bottom: none;
     }
-    .profile-list-item:active {
-      background: #F8FAFC;
-    }
-    .profile-item-left {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .profile-item-right {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: var(--text-muted);
-    }
 
-    /* 特約商訂單列表樣式 */
+    /* 訂單與案件列表 */
     .order-filter-bar {
       display: flex;
       gap: 6px;
@@ -363,22 +343,7 @@
       border-radius: 14px;
       padding: 12px;
       margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
       cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .order-card:active {
-      background: #F8FAFC;
-    }
-    .order-checkbox-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .order-card-content {
-      flex: 1;
     }
 
     /* 批次請款操作橫條 */
@@ -407,13 +372,8 @@
       color: #334155;
       flex-shrink: 0;
     }
-    .form-label .req {
-      color: #EF4444;
-      margin-left: 2px;
-    }
-    .form-input-box {
-      flex: 1;
-    }
+    .form-label .req { color: #EF4444; margin-left: 2px; }
+    .form-input-box { flex: 1; }
     .form-control {
       width: 100%;
       padding: 9px 12px;
@@ -422,13 +382,6 @@
       font-size: 13px;
       outline: none;
       background: #FFFFFF;
-    }
-    .form-control:focus {
-      border-color: var(--primary);
-    }
-    .form-control:disabled {
-      background: #F1F5F9;
-      color: #64748B;
     }
 
     /* 底部導覽列 */
@@ -508,18 +461,19 @@
       color: #64748B;
     }
 
-    /* 登入彈窗 */
+    /* 登入彈窗分頁 (含業務人員) */
     .auth-tab-bar {
       display: flex;
       border-radius: 12px;
       background: #F1F5F9;
       padding: 4px;
       margin-bottom: 16px;
+      gap: 4px;
     }
     .auth-tab-btn {
       flex: 1;
-      padding: 8px;
-      font-size: 13px;
+      padding: 7px 4px;
+      font-size: 12px;
       font-weight: 700;
       border: none;
       border-radius: 8px;
@@ -532,94 +486,31 @@
       color: var(--primary);
       box-shadow: 0 2px 6px rgba(0,0,0,0.06);
     }
-    .auth-input-group {
-      text-align: left;
-      margin-bottom: 12px;
-    }
-    .auth-input-label {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-muted);
-      margin-bottom: 4px;
-      display: block;
-    }
-    .auth-input {
-      width: 100%;
-      padding: 10px 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      font-size: 13px;
-      outline: none;
-    }
+    .auth-input-group { text-align: left; margin-bottom: 12px; }
+    .auth-input-label { font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 4px; display: block; }
+    .auth-input { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid var(--border); font-size: 13px; outline: none; }
 
-    /* 推播項目 */
-    .notif-item {
-      padding: 12px;
+    /* 上傳預覽框 */
+    .upload-dropzone {
+      border: 2px dashed #CBD5E1;
       border-radius: 12px;
-      border: 1px solid var(--border);
-      margin-bottom: 10px;
-      text-align: left;
-      background: white;
-      position: relative;
-    }
-    .notif-item.unread {
-      background: #F0FDF4;
-      border-color: #BBF7D0;
-    }
-    .notif-item.unread::before {
-      content: '';
-      position: absolute;
-      top: 14px;
-      right: 12px;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--red);
-    }
-
-    /* 客服彈窗對話框樣式 */
-    .chat-bubble {
-      background: #F1F5F9;
-      border-radius: 12px;
-      padding: 10px 12px;
-      font-size: 12px;
-      line-height: 1.4;
-      margin-bottom: 8px;
-      text-align: left;
-    }
-    .chat-bubble-user {
-      background: #DBEAFE;
-      color: #1E40AF;
-      align-self: flex-end;
-      text-align: right;
-    }
-    .faq-chip {
-      background: white;
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 6px 12px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #334155;
+      padding: 16px;
+      background: #F8FAFC;
+      text-align: center;
       cursor: pointer;
-      display: inline-block;
-      margin: 3px 2px;
-      transition: all 0.2s;
-    }
-    .faq-chip:active {
-      background: #EFF6FF;
-      border-color: #93C5FD;
+      margin-bottom: 12px;
     }
   </style>
 </head>
 <body>
 
-  <!-- 頂部情境切換控制器 -->
+  <!-- 頂部情境切換控制器 (含第四身分：業務人員) -->
   <header class="control-header">
     <div class="control-panel">
-      <button class="ctrl-btn active" onclick="switchScene('guest')">1. 未登入首頁</button>
+      <button class="ctrl-btn active" onclick="switchScene('guest')">1. 訪客首頁</button>
       <button class="ctrl-btn" onclick="switchScene('consumer')">2. 消費者帳務</button>
       <button class="ctrl-btn" onclick="switchScene('merchant')">3. 特約商工作台</button>
+      <button class="ctrl-btn" onclick="switchScene('sales')">4. 業務人員工作台</button>
     </div>
   </header>
 
@@ -640,9 +531,9 @@
       </div>
     </div>
 
-    <!-- 客服功能常駐浮窗按鈕 (NEW) -->
+    <!-- 客服功能常駐浮窗按鈕 -->
     <div class="support-fab" onclick="openModal('support-modal')">
-      <span class="support-fab-icon">🎧</span>
+      <span>🎧</span>
       <span>在線客服</span>
     </div>
 
@@ -761,7 +652,6 @@
 
       <div class="card-title">進行中合約明細 (3 筆)</div>
       
-      <!-- 合約 1：東元資融 -->
       <div class="card" style="padding: 12px; margin-bottom: 8px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-blue">東元資融</span>
@@ -771,20 +661,15 @@
         <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 45,000 ｜ 正常履約中</div>
       </div>
 
-      <!-- 合約 2：BOBOPAY -->
       <div class="card" style="padding: 12px; margin-bottom: 8px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-orange">BOBOPAY</span>
           <span style="font-weight: 800; font-size: 13px;">NT$ 2,250</span>
         </div>
         <div style="font-size: 13px; font-weight: 700; margin-bottom: 4px;">毛孩動物醫院醫療費 (期數: 4/12)</div>
-        <div style="font-size: 11px; color: var(--text-muted); display: flex; justify-content: space-between;">
-          <span>剩餘本金：NT$ 18,000</span>
-          <span style="color: var(--text-muted);">正常履約中</span>
-        </div>
+        <div style="font-size: 11px; color: var(--text-muted);">剩餘本金：NT$ 18,000 ｜ 正常履約中</div>
       </div>
 
-      <!-- 合約 3：DUDUPAY -->
       <div class="card" style="padding: 12px; margin-bottom: 14px;">
         <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
           <span class="badge badge-green">DUDUPAY</span>
@@ -813,7 +698,6 @@
 
     <!-- ==================== 情境 2-B：我的帳戶 (Profile 個人中心) ==================== -->
     <section id="screen-profile" class="app-screen">
-      <!-- 個人資料卡片 -->
       <div class="card" style="background: linear-gradient(135deg, #1E3A8A, #2563EB); color: white; margin-bottom: 16px;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start;">
           <div>
@@ -828,85 +712,34 @@
         </div>
       </div>
 
-      <!-- 帳戶與常用設定 -->
       <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">帳戶與個人設定</div>
       <div class="profile-list-group">
-        <div class="profile-list-item" onclick="alert('開啟個人資料修改（更新通訊地址、常用 Email、緊急聯絡人）')">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">👤</span>
-            <span>個人資料修改</span>
-          </div>
-          <div class="profile-item-right">
-            <span>修改 ›</span>
-          </div>
+        <div class="profile-list-item" onclick="alert('開啟個人資料修改')">
+          <span>👤 個人資料修改</span>
+          <span style="font-size: 12px; color: var(--text-muted);">修改 ›</span>
         </div>
-        <div class="profile-list-item" onclick="alert('開啟電子發票載具設定：目前設定【//ABC1234】')">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">🧾</span>
-            <span>電子發票載具設定</span>
-          </div>
-          <div class="profile-item-right">
-            <span style="font-family: monospace; font-weight: 700;">//ABC1234 ›</span>
-          </div>
+        <div class="profile-list-item" onclick="alert('電子發票載具設定：目前設定【//ABC1234】')">
+          <span>🧾 電子發票載具設定</span>
+          <span style="font-family: monospace; font-weight: 700; font-size: 12px;">//ABC1234 ›</span>
         </div>
         <div class="profile-list-item" onclick="copyReferralCode()">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">🎁</span>
-            <span>我的專屬推薦碼</span>
-          </div>
-          <div class="profile-item-right">
-            <span class="badge badge-orange" style="font-family: monospace; font-size: 11px;">TECO888 (複製)</span>
-          </div>
+          <span>🎁 我的專屬推薦碼</span>
+          <span class="badge badge-orange" style="font-family: monospace; font-size: 11px;">TECO888 (複製)</span>
         </div>
       </div>
 
-      <!-- 安全與通知設定 -->
       <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">安全性與通知</div>
       <div class="profile-list-group">
         <div class="profile-list-item" onclick="alert('生物辨識狀態：Face ID 已啟用')">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">🔒</span>
-            <span>生物辨識與密碼修改</span>
-          </div>
-          <div class="profile-item-right">
-            <span>Face ID ›</span>
-          </div>
+          <span>🔒 生物辨識與密碼修改</span>
+          <span style="font-size: 12px; color: var(--text-muted);">Face ID ›</span>
         </div>
-        <div class="profile-list-item" onclick="alert('繳款通知設定：已開啟推播與簡訊通知')">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">🔔</span>
-            <span>繳款通知偏好設定</span>
-          </div>
-          <div class="profile-item-right">
-            <span style="color: var(--green); font-weight: 700;">已開啟 ›</span>
-          </div>
+        <div class="profile-list-item" onclick="alert('繳款通知偏好：已開啟')">
+          <span>🔔 繳款通知偏好設定</span>
+          <span style="color: var(--green); font-weight: 700; font-size: 12px;">已開啟 ›</span>
         </div>
       </div>
 
-      <!-- 服務與條款 -->
-      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px; padding-left: 4px;">服務與條款</div>
-      <div class="profile-list-group">
-        <div class="profile-list-item" onclick="openModal('support-modal')">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">💬</span>
-            <span>常見問題與客服協助</span>
-          </div>
-          <div class="profile-item-right">
-            <span>在線客服 ›</span>
-          </div>
-        </div>
-        <div class="profile-list-item" onclick="alert('檢視使用者服務條款與隱私權保護政策')">
-          <div class="profile-item-left">
-            <span style="font-size: 16px;">📄</span>
-            <span>使用者條款與隱私政策</span>
-          </div>
-          <div class="profile-item-right">
-            <span>檢視 ›</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- 登出按鈕 -->
       <button class="btn-main" style="background: white; color: #EF4444; border: 1px solid #FECACA; margin-top: 10px;" onclick="executeLogout()">
         安全登出帳號
       </button>
@@ -922,9 +755,8 @@
         <button class="badge badge-orange" style="padding: 4px 10px; font-size: 11px; border: none; cursor: pointer;" onclick="switchScene('consumer')">切換個人視角 👤</button>
       </div>
 
-      <!-- 營運總覽看板 -->
       <div class="card" style="background: #1E293B; color: white;">
-        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 4px;">今日營業概況 (2026/09/15)</div>
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 4px;">今日營業概況 (2026/09/23)</div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
           <div>
             <div style="font-size: 11px; opacity: 0.7;">今日交易</div>
@@ -941,7 +773,6 @@
         </div>
       </div>
 
-      <!-- 訂單管理標題與排序 -->
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
         <div style="font-size: 14px; font-weight: 800; color: var(--text);">📋 門市分期訂單管理</div>
         <button id="sortBtn" onclick="toggleSortOrder()" style="background: white; border: 1px solid var(--border); border-radius: 12px; padding: 4px 8px; font-size: 11px; font-weight: 600; color: var(--text-muted); cursor: pointer;">
@@ -949,7 +780,6 @@
         </button>
       </div>
 
-      <!-- 狀態篩選 Chips -->
       <div class="order-filter-bar">
         <div class="filter-chip active" onclick="filterOrders('ALL', this)">全部 (<span id="countAll">5</span>)</div>
         <div class="filter-chip" onclick="filterOrders('READY_REQUEST', this)">🔵 待請款 (<span id="countReady">2</span>)</div>
@@ -958,7 +788,6 @@
         <div class="filter-chip" onclick="filterOrders('NEED_DOC', this)">🟠 審查補件/照會 (<span id="countNeed">0</span>)</div>
       </div>
 
-      <!-- 待請款專屬批次請款操作橫條 -->
       <div id="payoutActionBar" class="payout-action-bar" style="display: none;">
         <label style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; cursor: pointer;">
           <input type="checkbox" id="selectAllCheckbox" onchange="toggleSelectAll(this)" style="width: 16px; height: 16px;">
@@ -969,8 +798,65 @@
         </button>
       </div>
 
-      <!-- 訂單列表容器 -->
       <div id="orderListContainer"></div>
+    </section>
+
+    <!-- ==================== 情境 4：業務人員工作台 (Sales Agent - NEW) ==================== -->
+    <section id="screen-sales" class="app-screen">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;">
+        <div>
+          <div style="font-size: 11px; color: var(--text-muted);">業務代表工作台</div>
+          <div style="font-size: 16px; font-weight: 800;">陳大偉 (工號: S-8821) 💼</div>
+        </div>
+        <span class="badge badge-purple">北區展業組</span>
+      </div>
+
+      <!-- 業務營運看板 -->
+      <div class="card" style="background: linear-gradient(135deg, #312E81, #4338CA); color: white;">
+        <div style="font-size: 11px; opacity: 0.8; margin-bottom: 6px;">本月業務業績指標 (2026/09)</div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 12px;">
+          <div>
+            <div style="font-size: 10px; opacity: 0.7;">負責特約商</div>
+            <div style="font-size: 16px; font-weight: 800;">8 家</div>
+          </div>
+          <div>
+            <div style="font-size: 10px; opacity: 0.7;">本月進件</div>
+            <div style="font-size: 16px; font-weight: 800;">NT$ 1.28M</div>
+          </div>
+          <div>
+            <div style="font-size: 10px; opacity: 0.7;">需補件案件</div>
+            <div style="font-size: 16px; font-weight: 800; color: #FCA5A5;">2 件</div>
+          </div>
+        </div>
+        <button class="btn-main" style="background: #10B981; font-size: 13px; padding: 10px;" onclick="openModal('manual-entry-modal')">
+          📝 代表特約商發起人工送件
+        </button>
+      </div>
+
+      <!-- 特約商切換下拉選單 -->
+      <div class="card" style="padding: 10px 14px; margin-bottom: 12px;">
+        <div style="display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">負責特約商篩選：</span>
+          <select id="salesMerchantFilter" onchange="filterSalesOrders()" class="form-control" style="width: 60%; padding: 6px 8px; font-size: 12px;">
+            <option value="ALL">全部特約商 (8 家)</option>
+            <option value="冠宇重機精品" selected>冠宇重機精品</option>
+            <option value="毛孩健康生活館">毛孩健康生活館</option>
+            <option value="極速車業">極速車業</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 案件狀態分類 Bar -->
+      <div class="order-filter-bar">
+        <div class="filter-chip active" onclick="filterSalesStatus('ALL', this)">全部案件 (6)</div>
+        <div class="filter-chip" onclick="filterSalesStatus('NEED_DOC', this)" style="border-color: #FCA5A5;">🟠 審查補件中 (2)</div>
+        <div class="filter-chip" onclick="filterSalesStatus('AUDITING', this)">🟡 徵審照會中 (1)</div>
+        <div class="filter-chip" onclick="filterSalesStatus('APPROVED', this)">🟢 已核准待交貨 (1)</div>
+        <div class="filter-chip" onclick="filterSalesStatus('PAID', this)">⚪ 已撥款 (2)</div>
+      </div>
+
+      <!-- 業務負責案件清單 -->
+      <div id="salesOrderListContainer"></div>
     </section>
 
     <!-- 底部原生 Tab 導覽列 -->
@@ -991,7 +877,7 @@
 
     <!-- ==================== 彈窗集合 ==================== -->
 
-    <!-- 客服浮窗對話彈窗 (NEW) -->
+    <!-- 客服浮窗對話彈窗 -->
     <div id="support-modal" class="modal-overlay" onclick="closeModal('support-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left; padding: 18px;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
@@ -1001,35 +887,65 @@
           </div>
           <span style="font-size: 13px; color: var(--text-muted); cursor: pointer;" onclick="closeModal('support-modal')">✕ 關閉</span>
         </div>
-
-        <!-- 對話視窗 -->
-        <div style="height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; padding-right: 4px;" id="chatMessageArea">
+        <div style="height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;" id="chatMessageArea">
           <div class="chat-bubble">
             您好！我是東元資融智能服務助手 👋<br>很高興為您服務，請點選下方常見問題，或直接在下方輸入提問：
           </div>
         </div>
-
-        <!-- 常見快捷問題 -->
-        <div style="margin-bottom: 10px;">
-          <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; margin-bottom: 4px;">常見快速諮詢：</div>
-          <div style="display: flex; flex-wrap: wrap;">
-            <span class="faq-chip" onclick="askQuestion('超商繳費條碼如何使用？')">如何超商繳款？</span>
-            <span class="faq-chip" onclick="askQuestion('我想申請提前結清合約')">如何申請提前結清？</span>
-            <span class="faq-chip" onclick="askQuestion('特約商請款審核需要幾天？')">特約商請款時間？</span>
-            <span class="faq-chip" onclick="askQuestion('轉接真人電話客服')">轉接真人專人</span>
-          </div>
-        </div>
-
-        <!-- 輸入欄位 -->
         <div style="display: flex; gap: 6px;">
           <input type="text" id="chatInput" class="form-control" placeholder="請輸入問題..." onkeypress="if(event.key === 'Enter') sendUserMessage()">
           <button class="badge badge-blue" style="padding: 0 14px; border: none; font-size: 12px; cursor: pointer;" onclick="sendUserMessage()">發送</button>
         </div>
+      </div>
+    </div>
 
-        <!-- 客服專線電話提示 -->
-        <div style="margin-top: 10px; text-align: center; font-size: 11px; color: var(--text-muted);">
-          客服免付費專線：<a href="tel:0800-000-888" style="color: var(--primary); font-weight: 700; text-decoration: none;">0800-000-888</a> (週一至週五 09:00 - 18:00)
+    <!-- 業務專用：補充文件與上傳照片彈窗 (NEW) -->
+    <div id="upload-doc-modal" class="modal-overlay" onclick="closeModal('upload-doc-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left; padding: 18px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
+          <div>
+            <h3 style="font-size: 15px; font-weight: 800; color: #1E293B;">📎 案件補充文件與照片上傳</h3>
+            <span style="font-size: 11px; color: var(--primary); font-weight: 700;" id="uploadTargetOrderId">案件編號：DD20260912-04</span>
+          </div>
+          <span style="font-size: 13px; color: var(--text-muted); cursor: pointer;" onclick="closeModal('upload-doc-modal')">✕ 關閉</span>
         </div>
+
+        <div class="form-group-row">
+          <div class="form-label">補件類別<span class="req">*</span></div>
+          <div class="form-input-box">
+            <select id="docTypeSelect" class="form-control">
+              <option value="ID_BACK">身分證反面補拍照</option>
+              <option value="HEALTH_CARD" selected>第二證件 (健保卡/駕照)</option>
+              <option value="INCOME_DOC">薪轉存摺/財力證明 (近3個月)</option>
+              <option value="GOODS_PHOTO">交車/商品交付現場照片</option>
+              <option value="OTHER">其他徵信補充說明書</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- 拍照與上傳互動區 -->
+        <div class="upload-dropzone" onclick="document.getElementById('hiddenFileInput').click()">
+          <div style="font-size: 30px; margin-bottom: 4px;">📷</div>
+          <div style="font-size: 12px; font-weight: 700; color: var(--primary);">點擊拍照或選取照片上傳</div>
+          <div style="font-size: 10px; color: var(--text-muted); margin-top: 2px;">支援 JPG / PNG / PDF，單檔上限 10MB</div>
+          <input type="file" id="hiddenFileInput" style="display: none;" onchange="handleFileSelected(this)">
+        </div>
+
+        <div id="filePreviewArea" style="display: none; background: #F1F5F9; border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; font-size: 11px; display: flex; justify-content: space-between; align-items: center;">
+          <span id="previewFileName">健保卡正面_20260923.jpg (1.8MB)</span>
+          <span style="color: var(--green); font-weight: 700;">✓ 已選取</span>
+        </div>
+
+        <div class="form-group-row" style="align-items: flex-start;">
+          <div class="form-label">業務備註</div>
+          <div class="form-input-box">
+            <textarea id="salesDocNote" class="form-control" rows="2" placeholder="請註記說明（如：客戶已完成補簽，已核驗正本）"></textarea>
+          </div>
+        </div>
+
+        <button class="btn-main" style="background: var(--purple); margin-top: 8px;" onclick="submitUploadedDocument()">
+          確認上傳並通知審查組
+        </button>
       </div>
     </div>
 
@@ -1039,6 +955,13 @@
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
           <h3 style="font-size: 16px; font-weight: 800; color: #1E293B;">📝 填寫人工送件分期訂單</h3>
           <span style="font-size: 13px; color: var(--text-muted); cursor: pointer;" onclick="closeModal('manual-entry-modal')">✕ 關閉</span>
+        </div>
+
+        <div class="form-group-row">
+          <div class="form-label">特約商名稱<span class="req">*</span></div>
+          <div class="form-input-box">
+            <input type="text" id="manualMerchantName" class="form-control" placeholder="特約商門市名稱" value="冠宇重機精品">
+          </div>
         </div>
 
         <div class="form-group-row">
@@ -1142,15 +1065,20 @@
       </div>
     </div>
 
-    <!-- 3. 整合式登入彈窗 -->
+    <!-- 3. 整合式登入彈窗 (增加「業務人員」分頁) -->
     <div id="auth-modal" class="modal-overlay" onclick="closeModal('auth-modal')">
       <div class="modal-content" onclick="event.stopPropagation()">
         <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 6px;">歡迎登入 東元資融</h3>
         <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 14px;">請選擇您的身分進入整合服務平台</p>
+        
+        <!-- 三大身分 Tab -->
         <div class="auth-tab-bar">
           <button class="auth-tab-btn active" id="authTabConsumer" onclick="switchAuthTab('consumer')">一般消費者</button>
-          <button class="auth-tab-btn" id="authTabMerchant" onclick="switchAuthTab('merchant')">特約商夥伴 🏍️</button>
+          <button class="auth-tab-btn" id="authTabMerchant" onclick="switchAuthTab('merchant')">特約商夥伴</button>
+          <button class="auth-tab-btn" id="authTabSales" onclick="switchAuthTab('sales')">業務人員 💼</button>
         </div>
+
+        <!-- 消費者登入欄位 -->
         <div id="consumerAuthFields">
           <div class="auth-input-group">
             <label class="auth-input-label">手機號碼</label>
@@ -1162,6 +1090,8 @@
           </div>
           <button class="btn-main" onclick="executeLogin('consumer')">以消費者身分登入</button>
         </div>
+
+        <!-- 特約商登入欄位 -->
         <div id="merchantAuthFields" style="display: none;">
           <div class="auth-input-group">
             <label class="auth-input-label">特約商統一編號</label>
@@ -1177,6 +1107,24 @@
           </div>
           <button class="btn-main" style="background: #1E293B;" onclick="executeLogin('merchant')">以特約商身分登入工作台</button>
         </div>
+
+        <!-- 業務人員登入欄位 (NEW) -->
+        <div id="salesAuthFields" style="display: none;">
+          <div class="auth-input-group">
+            <label class="auth-input-label">業務員工工號</label>
+            <input type="text" class="auth-input" placeholder="例：S-8821" value="S-8821">
+          </div>
+          <div class="auth-input-group">
+            <label class="auth-input-label">公務手機門號</label>
+            <input type="tel" class="auth-input" placeholder="0975-123-456" value="0975123456">
+          </div>
+          <div class="auth-input-group">
+            <label class="auth-input-label">業務認證密碼</label>
+            <input type="password" class="auth-input" placeholder="請輸入業務系統密碼" value="sales8888">
+          </div>
+          <button class="btn-main" style="background: var(--purple);" onclick="executeLogin('sales')">以業務身分登入工作台</button>
+        </div>
+
       </div>
     </div>
 
@@ -1214,7 +1162,7 @@
       </div>
     </div>
 
-    <!-- 6. 特約商訂單詳情彈窗 -->
+    <!-- 6. 訂單詳情彈窗 -->
     <div id="order-detail-modal" class="modal-overlay" onclick="closeModal('order-detail-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
@@ -1231,10 +1179,11 @@
   <script>
     let currentAuthState = 'GUEST';
 
-    // 特約商訂單資料庫
+    // 特約商與業務共用訂單資料庫
     let mockOrders = [
       {
         id: "DD20260914-01",
+        merchant: "冠宇重機精品",
         date: "2026/09/14 11:20",
         customer: "陳 O 華",
         item: "碳纖維排氣管升級套件",
@@ -1249,6 +1198,7 @@
       },
       {
         id: "DD20260913-05",
+        merchant: "冠宇重機精品",
         date: "2026/09/13 16:10",
         customer: "黃 O 傑",
         item: "鍛造輕量後搖臂組",
@@ -1262,7 +1212,38 @@
         selected: false
       },
       {
+        id: "DD20260912-04",
+        merchant: "冠宇重機精品",
+        date: "2026/09/12 15:40",
+        customer: "王 O 翔",
+        item: "Brembo 煞車卡鉗改裝組",
+        amount: 22000,
+        installments: "6 期",
+        status: "NEED_DOC",
+        statusText: "🟠 審查補件中",
+        feeRate: "2.0%",
+        payoutAmount: 21560,
+        note: "徵審員照會：客戶第二證件模糊，請業務協助補傳健保卡正面照片。",
+        selected: false
+      },
+      {
+        id: "DD20260911-08",
+        merchant: "毛孩健康生活館",
+        date: "2026/09/11 10:15",
+        customer: "張 O 婷",
+        item: "寵物高壓氧艙治療療程",
+        amount: 52000,
+        installments: "12 期",
+        status: "NEED_DOC",
+        statusText: "🟠 審查補件中",
+        feeRate: "2.5%",
+        payoutAmount: 50700,
+        note: "徵審員提示：單筆超過5萬，需補傳近3個月薪資證明或存摺封面照片。",
+        selected: false
+      },
+      {
         id: "DD20260910-02",
+        merchant: "冠宇重機精品",
         date: "2026/09/10 14:15",
         customer: "李 O 廷",
         item: "4K 前後雙鏡行車記錄器",
@@ -1272,11 +1253,12 @@
         statusText: "🟡 待撥款 (審核已核准)",
         feeRate: "2.5%",
         payoutAmount: 4668,
-        note: "金流組已核准請款，預計於下個撥款日 (09/16) 自動匯入玉山銀行帳戶。",
+        note: "金流組已核准請款，預計於下個撥款日自動匯入玉山銀行帳戶。",
         selected: false
       },
       {
         id: "DD20260905-01",
+        merchant: "冠宇重機精品",
         date: "2026/09/05 09:30",
         customer: "張 O 豪",
         item: "全罩式碳纖維安全帽",
@@ -1286,101 +1268,269 @@
         statusText: "🟢 已撥款",
         feeRate: "2.0%",
         payoutAmount: 8624,
-        note: "已於 2026/09/07 撥入玉山銀行指定帳戶 (尾號 8821)。",
-        selected: false
-      },
-      {
-        id: "DD20260902-03",
-        date: "2026/09/02 16:50",
-        customer: "林 O 宇",
-        item: "鍛造輪框前後組",
-        amount: 45000,
-        installments: "24 期",
-        status: "PAID",
-        statusText: "🟢 已撥款",
-        feeRate: "3.0%",
-        payoutAmount: 43650,
-        note: "已於 2026/09/05 撥入玉山銀行指定帳戶 (尾號 8821)。",
+        note: "已於 2026/09/07 撥入特約商指定帳戶 (尾號 8821)。",
         selected: false
       }
     ];
 
     let currentFilter = 'ALL';
     let sortAscending = false;
+    let currentSalesStatusFilter = 'ALL';
+    let targetUploadOrder = null;
 
-    // 客服發送問題與自動回覆邏輯
-    function askQuestion(question) {
-      appendChatMessage(question, true);
-      setTimeout(() => {
-        let reply = "感謝您的提問，目前系統已記錄。若需進一步人工核對，請於上班時間撥打 0800-000-888。";
-        if (question.includes("超商繳費")) {
-          reply = "請至「首頁/帳務」點擊「出示超商條碼」，手機螢幕將自動調至最亮，即可直接至 7-11/全家/萊爾富/OK 櫃檯出示刷碼一次繳清合併帳單。";
-        } else if (question.includes("提前結清")) {
-          reply = "進行中合約下方點擊「結清試算」，系統會即時扣減未到期遞延利息並計算手續費，可於線上直接產生專屬繳款單。";
-        } else if (question.includes("特約商請款")) {
-          reply = "特約商請款於門市工作台勾選送出後，金流組將於 1 個工作天內完成審核，並於約定結算日自動撥入受款帳戶。";
-        } else if (question.includes("真人")) {
-          reply = "正在為您轉接電話專人服務... 請直接撥打免費服務專線：0800-000-888，服務時間平日 09:00 - 18:00。";
+    // 開啟補件彈窗
+    function openUploadModal(orderId) {
+      targetUploadOrder = mockOrders.find(o => o.id === orderId);
+      if (!targetUploadOrder) return;
+      document.getElementById('uploadTargetOrderId').innerText = `案件：${targetUploadOrder.id} (${targetUploadOrder.customer})`;
+      document.getElementById('filePreviewArea').style.display = 'none';
+      document.getElementById('salesDocNote').value = '';
+      openModal('upload-doc-modal');
+    }
+
+    // 模擬選取檔案
+    function handleFileSelected(input) {
+      if (input.files && input.files[0]) {
+        document.getElementById('previewFileName').innerText = `${input.files[0].name} (已讀取)`;
+        document.getElementById('filePreviewArea').style.display = 'flex';
+      }
+    }
+
+    // 提交業務補件
+    function submitUploadedDocument() {
+      if (!targetUploadOrder) return;
+      const docType = document.getElementById('docTypeSelect').selectedOptions[0].text;
+      const note = document.getElementById('salesDocNote').value.trim();
+
+      targetUploadOrder.status = "AUDITING";
+      targetUploadOrder.statusText = "🟡 徵審照會中 (業務已補件)";
+      targetUploadOrder.note = `【業務已補件】${docType} 已上傳。備註：${note || '無'}。系統已自動派工至東元徵審員複核。`;
+
+      closeModal('upload-doc-modal');
+      alert(`🎉 補件成功！\n已為【${targetUploadOrder.id}】上傳「${docType}」照片及文件！\n案件狀態更新為【徵審照會中】。`);
+      renderSalesOrders();
+      renderOrders();
+    }
+
+    // 渲染業務人員案件清單
+    function renderSalesOrders() {
+      const container = document.getElementById('salesOrderListContainer');
+      if (!container) return;
+
+      const merchantFilter = document.getElementById('salesMerchantFilter').value;
+
+      let filtered = mockOrders.filter(o => {
+        const matchMerchant = (merchantFilter === 'ALL') || (o.merchant === merchantFilter);
+        let matchStatus = true;
+        if (currentSalesStatusFilter === 'NEED_DOC') matchStatus = (o.status === 'NEED_DOC');
+        else if (currentSalesStatusFilter === 'AUDITING') matchStatus = (o.status === 'AUDITING');
+        else if (currentSalesStatusFilter === 'APPROVED') matchStatus = (o.status === 'READY_REQUEST' || o.status === 'APPROVED');
+        else if (currentSalesStatusFilter === 'PAID') matchStatus = (o.status === 'PAID');
+        return matchMerchant && matchStatus;
+      });
+
+      if (filtered.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 30px; font-size: 12px; color: var(--text-muted);">查無該篩選條件之案件</div>`;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(o => {
+        let badgeClass = 'badge-gray';
+        if (o.status === 'PAID') badgeClass = 'badge-green';
+        else if (o.status === 'NEED_DOC') badgeClass = 'badge-red';
+        else if (o.status === 'AUDITING') badgeClass = 'badge-orange';
+        else if (o.status === 'READY_REQUEST') badgeClass = 'badge-blue';
+
+        // 若需要補件，提供業務快速補充文件按鈕
+        const uploadBtnHtml = (o.status === 'NEED_DOC') ? `
+          <button class="badge" style="background: var(--purple); color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 12px; margin-top: 6px;" onclick="event.stopPropagation(); openUploadModal('${o.id}')">
+            📷 補充文件/照片上傳
+          </button>
+        ` : '';
+
+        html += `
+          <div class="order-card" onclick="viewOrderDetail('${o.id}')">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+              <span style="font-size: 11px; font-weight: 700; color: var(--primary);">${o.merchant}</span>
+              <span class="badge ${badgeClass}">${o.statusText}</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: baseline;">
+              <div style="font-size: 13px; font-weight: 800;">${o.customer} ｜ ${o.item}</div>
+              <div style="font-size: 14px; font-weight: 900; color: var(--text);">NT$ ${o.amount.toLocaleString()}</div>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted); margin-top: 4px;">
+              <span>期數：${o.installments} ｜ 案件號：${o.id}</span>
+              <span>${o.date.split(' ')[0]}</span>
+            </div>
+            ${uploadBtnHtml}
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+    }
+
+    function filterSalesOrders() {
+      renderSalesOrders();
+    }
+
+    function filterSalesStatus(status, el) {
+      currentSalesStatusFilter = status;
+      document.querySelectorAll('#screen-sales .filter-chip').forEach(c => c.classList.remove('active'));
+      if (el) el.classList.add('active');
+      renderSalesOrders();
+    }
+
+    // 切換登入分頁
+    function switchAuthTab(role) {
+      const btnConsumer = document.getElementById('authTabConsumer');
+      const btnMerchant = document.getElementById('authTabMerchant');
+      const btnSales = document.getElementById('authTabSales');
+      const fldConsumer = document.getElementById('consumerAuthFields');
+      const fldMerchant = document.getElementById('merchantAuthFields');
+      const fldSales = document.getElementById('salesAuthFields');
+
+      btnConsumer.classList.toggle('active', role === 'consumer');
+      btnMerchant.classList.toggle('active', role === 'merchant');
+      btnSales.classList.toggle('active', role === 'sales');
+
+      fldConsumer.style.display = role === 'consumer' ? 'block' : 'none';
+      fldMerchant.style.display = role === 'merchant' ? 'block' : 'none';
+      fldSales.style.display = role === 'sales' ? 'block' : 'none';
+    }
+
+    // 登入處理
+    function executeLogin(role) {
+      closeModal('auth-modal');
+      if (role === 'consumer') {
+        alert('🎉 登入成功！已為您載入跨品牌合約帳單。');
+        switchScene('consumer');
+      } else if (role === 'merchant') {
+        alert('🎉 歡迎特約商【冠宇重機精品】！已登入門市行動工作台。');
+        switchScene('merchant');
+      } else if (role === 'sales') {
+        alert('🎉 歡迎業務代表【陳大偉 (S-8821)】！已為您登入負責特約商案件管理後台。');
+        switchScene('sales');
+      }
+    }
+
+    // 底部導覽點擊
+    function handleNavClick(tab) {
+      if (tab === 'home') {
+        if (currentAuthState === 'GUEST') switchScene('guest');
+        else if (currentAuthState === 'MERCHANT') switchScene('merchant');
+        else if (currentAuthState === 'SALES') switchScene('sales');
+        else switchScene('consumer');
+      } else if (tab === 'billing') {
+        if (currentAuthState === 'GUEST') openAuthModal('consumer');
+        else if (currentAuthState === 'MERCHANT') switchScene('merchant');
+        else if (currentAuthState === 'SALES') switchScene('sales');
+        else switchScene('consumer');
+      } else if (tab === 'profile') {
+        if (currentAuthState === 'GUEST') {
+          openAuthModal('consumer');
+        } else if (currentAuthState === 'MERCHANT') {
+          switchScene('merchant');
+        } else if (currentAuthState === 'SALES') {
+          switchScene('sales');
+        } else {
+          document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+          document.getElementById('screen-profile').classList.add('active');
+          document.getElementById('tab-profile').classList.add('active');
+          document.getElementById('headerTitle').innerText = '我的帳戶';
         }
-        appendChatMessage(reply, false);
-      }, 500);
+      }
     }
 
-    function sendUserMessage() {
-      const input = document.getElementById('chatInput');
-      const val = input.value.trim();
-      if (!val) return;
-      askQuestion(val);
-      input.value = '';
+    // 情境切換
+    function switchScene(scene) {
+      document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.ctrl-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+
+      if (scene === 'guest') {
+        currentAuthState = 'GUEST';
+        document.getElementById('screen-guest').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[0].classList.add('active');
+        document.getElementById('tab-home').classList.add('active');
+        document.getElementById('headerTitle').innerText = '東元資融';
+      } else if (scene === 'consumer') {
+        currentAuthState = 'CONSUMER';
+        document.getElementById('screen-consumer').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[1].classList.add('active');
+        document.getElementById('tab-home').classList.add('active');
+        document.getElementById('headerTitle').innerText = '東元資融';
+      } else if (scene === 'merchant') {
+        currentAuthState = 'MERCHANT';
+        document.getElementById('screen-merchant').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[2].classList.add('active');
+        document.getElementById('tab-profile').classList.add('active');
+        document.getElementById('headerTitle').innerText = '特約商工作台';
+        renderOrders();
+      } else if (scene === 'sales') {
+        currentAuthState = 'SALES';
+        document.getElementById('screen-sales').classList.add('active');
+        document.querySelectorAll('.ctrl-btn')[3].classList.add('active');
+        document.getElementById('tab-profile').classList.add('active');
+        document.getElementById('headerTitle').innerText = '業務人員工作台';
+        renderSalesOrders();
+      }
+
+      updateNavBarForAuth();
     }
 
-    function appendChatMessage(text, isUser) {
-      const area = document.getElementById('chatMessageArea');
-      const div = document.createElement('div');
-      div.className = isUser ? 'chat-bubble chat-bubble-user' : 'chat-bubble';
-      div.innerText = text;
-      area.appendChild(div);
-      area.scrollTop = area.scrollHeight;
+    function updateNavBarForAuth() {
+      const profileText = document.getElementById('profileTabText');
+      const profileIcon = document.getElementById('profileTabIcon');
+      if (currentAuthState === 'MERCHANT') {
+        profileText.innerText = '特約商台';
+        profileIcon.innerText = '🏍️';
+      } else if (currentAuthState === 'SALES') {
+        profileText.innerText = '業務後台';
+        profileIcon.innerText = '💼';
+      } else {
+        profileText.innerText = '我的帳戶';
+        profileIcon.innerText = '👤';
+      }
     }
 
-    // 動態計算期付金額
+    // 其餘公用邏輯維持
     function calculateInstallmentAmount() {
       const amount = parseFloat(document.getElementById('manualProdAmount').value) || 0;
       const periods = parseInt(document.getElementById('manualInstallment').value) || 0;
       const display = document.getElementById('manualInstallmentAmount');
       if (amount > 0 && periods > 0) {
-        const perMonth = Math.round(amount / periods);
-        display.value = `NT$ ${perMonth.toLocaleString()} /期`;
+        display.value = `NT$ ${Math.round(amount / periods).toLocaleString()} /期`;
       } else {
         display.value = '期付金額';
       }
     }
 
-    // 提交人工送件表單
     function submitManualOrder() {
+      const merchant = document.getElementById('manualMerchantName').value.trim() || '冠宇重機精品';
       const prodName = document.getElementById('manualProdName').value.trim();
       const prodAmount = parseFloat(document.getElementById('manualProdAmount').value) || 0;
       const periods = document.getElementById('manualInstallment').value;
       const phone = document.getElementById('manualPhone').value.trim();
-      const email = document.getElementById('manualEmail').value.trim();
-      const callTime = document.getElementById('manualCallTime').value;
       const agree = document.getElementById('manualAgreement').checked;
 
-      if (!prodAmount || !periods || !phone || !callTime) {
-        alert('請完整填寫標記紅星 (*) 之必填項目！');
+      if (!prodAmount || !periods || !phone) {
+        alert('請完整填寫必填項目！');
         return;
       }
       if (!agree) {
-        alert('請先閱讀並同意隱私權政策與約定條款！');
+        alert('請先閱讀並同意使用者約定條款！');
         return;
       }
 
-      const newOrderId = `DD20260915-0${mockOrders.length + 1}`;
+      const newOrderId = `DD20260923-0${mockOrders.length + 1}`;
       const now = new Date();
       const dateStr = `${now.getFullYear()}/${String(now.getMonth()+1).padStart(2,'0')}/${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`;
 
       mockOrders.unshift({
         id: newOrderId,
+        merchant: merchant,
         date: dateStr,
         customer: phone.substring(0, 4) + '***' + phone.substring(7),
         item: prodName || '未填寫品名',
@@ -1390,16 +1540,16 @@
         statusText: "🟠 審查照會中",
         feeRate: "2.5%",
         payoutAmount: Math.round(prodAmount * 0.975),
-        note: `特約商人工進件成功！接聽時間：${callTime}。東元資融徵審員將儘速進行照會電訪。`,
+        note: `人工進件成功！特約商：${merchant}。東元資融徵審員進行照會審查中。`,
         selected: false
       });
 
       closeModal('manual-entry-modal');
-      alert(`🎉 人工送件申請已送出！\n案件編號：${newOrderId}\n已同步傳送至東元資融後台進行徵信審查。`);
-      filterOrders('NEED_DOC', document.querySelectorAll('.filter-chip')[4]);
+      alert(`🎉 人工送件申請已送出！\n案件編號：${newOrderId}\n特約商：${merchant}`);
+      renderOrders();
+      renderSalesOrders();
     }
 
-    // 渲染訂單列表與待請款批次操作列
     function renderOrders() {
       const container = document.getElementById('orderListContainer');
       const payoutBar = document.getElementById('payoutActionBar');
@@ -1409,17 +1559,12 @@
       document.getElementById('countReady').innerText = mockOrders.filter(o => o.status === 'READY_REQUEST').length;
       document.getElementById('countPending').innerText = mockOrders.filter(o => o.status === 'PENDING_PAYOUT').length;
       document.getElementById('countPaid').innerText = mockOrders.filter(o => o.status === 'PAID').length;
-      document.getElementById('countNeed').innerText = mockOrders.filter(o => o.status === 'NEED_DOC').length;
+      document.getElementById('countNeed').innerText = mockOrders.filter(o => o.status === 'NEED_DOC' || o.status === 'AUDITING').length;
 
       const pendingTotal = mockOrders.filter(o => o.status === 'READY_REQUEST').reduce((sum, o) => sum + o.amount, 0);
       document.getElementById('totalPendingPayoutHeader').innerText = `NT$ ${pendingTotal.toLocaleString()}`;
 
-      if (currentFilter === 'READY_REQUEST') {
-        payoutBar.style.display = 'flex';
-        updateSelectedSummary();
-      } else {
-        payoutBar.style.display = 'none';
-      }
+      payoutBar.style.display = (currentFilter === 'READY_REQUEST') ? 'flex' : 'none';
 
       let filtered = mockOrders.filter(o => {
         if (currentFilter === 'ALL') return true;
@@ -1432,17 +1577,12 @@
         return sortAscending ? (dateA - dateB) : (dateB - dateA);
       });
 
-      if (filtered.length === 0) {
-        container.innerHTML = `<div style="text-align:center; padding: 30px; font-size: 12px; color: var(--text-muted);">查無該狀態的訂單</div>`;
-        return;
-      }
-
       let html = '';
       filtered.forEach(o => {
         let badgeClass = 'badge-gray';
         if (o.status === 'PAID') badgeClass = 'badge-green';
         else if (o.status === 'PENDING_PAYOUT') badgeClass = 'badge-orange';
-        else if (o.status === 'NEED_DOC') badgeClass = 'badge-orange';
+        else if (o.status === 'NEED_DOC') badgeClass = 'badge-red';
         else if (o.status === 'READY_REQUEST') badgeClass = 'badge-blue';
 
         const checkboxHtml = (currentFilter === 'READY_REQUEST') ? `
@@ -1493,38 +1633,28 @@
 
       document.getElementById('selectedCount').innerText = selected.length;
       document.getElementById('selectedAmountText').innerText = `NT$ ${totalSelectedAmt.toLocaleString()}`;
-      
-      const selectAll = document.getElementById('selectAllCheckbox');
-      if (selectAll) {
-        selectAll.checked = readyOrders.length > 0 && selected.length === readyOrders.length;
-      }
     }
 
     function submitSelectedPayout() {
       const selected = mockOrders.filter(o => o.status === 'READY_REQUEST' && o.selected);
       if (selected.length === 0) {
-        alert('請先勾選欲申請撥款之待請款案件！');
+        alert('請先勾選欲申請撥款之案件！');
         return;
       }
-
-      const totalAmt = selected.reduce((sum, o) => sum + o.amount, 0);
-      const confirmPayout = confirm(`確認將選取的 ${selected.length} 筆案件 (總計 NT$ ${totalAmt.toLocaleString()}) 送出申請撥款？`);
-      if (confirmPayout) {
+      if (confirm(`確認將選取的 ${selected.length} 筆案件送出請款？`)) {
         selected.forEach(o => {
           o.status = 'PENDING_PAYOUT';
           o.statusText = '🟡 待撥款 (審核中)';
           o.selected = false;
-          o.note = '特約商已於線上送出請款，東元資融金流審核中。';
         });
-
-        alert(`🎉 成功送出 ${selected.length} 筆請款申請！\n案件狀態已變更為【待撥款】，金流組將於排程日完成入帳作業。`);
+        alert('已成功送出請款！');
         filterOrders('PENDING_PAYOUT', document.querySelectorAll('.filter-chip')[2]);
       }
     }
 
     function filterOrders(filter, el) {
       currentFilter = filter;
-      document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+      document.querySelectorAll('#screen-merchant .filter-chip').forEach(c => c.classList.remove('active'));
       if (el) el.classList.add('active');
       renderOrders();
     }
@@ -1544,12 +1674,12 @@
       content.innerHTML = `
         <div style="background: #F8FAFC; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
           <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span style="font-size: 11px; color: var(--text-muted);">訂單編號</span>
-            <span style="font-size: 12px; font-weight: 700;">${order.id}</span>
+            <span style="font-size: 11px; color: var(--text-muted);">特約商門市</span>
+            <span style="font-size: 12px; font-weight: 800; color: var(--primary);">${order.merchant}</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-            <span style="font-size: 11px; color: var(--text-muted);">下單時間</span>
-            <span style="font-size: 12px;">${order.date}</span>
+            <span style="font-size: 11px; color: var(--text-muted);">訂單編號</span>
+            <span style="font-size: 12px; font-weight: 700;">${order.id}</span>
           </div>
           <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
             <span style="font-size: 11px; color: var(--text-muted);">客戶識別</span>
@@ -1562,15 +1692,10 @@
         </div>
 
         <div style="border: 1px solid var(--border); border-radius: 12px; padding: 12px; margin-bottom: 12px;">
-          <div style="font-size: 12px; font-weight: 800; margin-bottom: 6px;">購買商品項目</div>
-          <div style="font-size: 13px; margin-bottom: 4px;">${order.item}</div>
+          <div style="font-size: 12px; font-weight: 800; margin-bottom: 6px;">購買項目：${order.item}</div>
           <div style="display: flex; justify-content: space-between; font-size: 12px; margin-top: 8px; border-top: 1px dashed var(--border); padding-top: 6px;">
             <span>訂單總金額</span>
             <span style="font-weight: 800;">NT$ ${order.amount.toLocaleString()}</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted); margin-top: 4px;">
-            <span>手續費扣抵 (${order.feeRate})</span>
-            <span>- NT$ ${(order.amount - order.payoutAmount).toLocaleString()}</span>
           </div>
           <div style="display: flex; justify-content: space-between; font-size: 13px; font-weight: 900; color: var(--green); margin-top: 6px; border-top: 1px solid var(--border); padding-top: 6px;">
             <span>預計實撥淨額</span>
@@ -1579,99 +1704,11 @@
         </div>
 
         <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 10px; padding: 10px; font-size: 11px; color: #1E40AF; line-height: 1.4;">
-          <strong>審查與金流備註：</strong><br>${order.note}
+          <strong>審查與備註日誌：</strong><br>${order.note}
         </div>
       `;
 
       openModal('order-detail-modal');
-    }
-
-    // 複製推薦碼
-    function copyReferralCode() {
-      navigator.clipboard.writeText('TECO888').then(() => {
-        alert('🎉 專屬推薦碼【TECO888】已複製！\n好友透過您的推薦碼完成首次實名綁定，雙方皆可享折抵優惠。');
-      }).catch(() => {
-        alert('您的專屬推薦碼為：TECO888');
-      });
-    }
-
-    // 登出帳號
-    function executeLogout() {
-      if (confirm('確定要登出 東元資融 帳號嗎？')) {
-        currentAuthState = 'GUEST';
-        switchScene('guest');
-        alert('您已安全登出。');
-      }
-    }
-
-    // 導覽點擊處理
-    function handleNavClick(tab) {
-      if (tab === 'home') {
-        if (currentAuthState === 'GUEST') switchScene('guest');
-        else if (currentAuthState === 'MERCHANT') switchScene('merchant');
-        else switchScene('consumer');
-      } else if (tab === 'billing') {
-        if (currentAuthState === 'GUEST') {
-          openAuthModal('consumer');
-        } else if (currentAuthState === 'MERCHANT') {
-          switchScene('merchant');
-        } else {
-          switchScene('consumer');
-        }
-      } else if (tab === 'profile') {
-        if (currentAuthState === 'GUEST') {
-          openAuthModal('consumer');
-        } else if (currentAuthState === 'MERCHANT') {
-          switchScene('merchant');
-        } else {
-          document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
-          document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-          document.getElementById('screen-profile').classList.add('active');
-          document.getElementById('tab-profile').classList.add('active');
-          document.getElementById('headerTitle').innerText = '我的帳戶';
-        }
-      }
-    }
-
-    function switchScene(scene) {
-      document.querySelectorAll('.app-screen').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.ctrl-btn').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-
-      if (scene === 'guest') {
-        currentAuthState = 'GUEST';
-        document.getElementById('screen-guest').classList.add('active');
-        document.querySelectorAll('.ctrl-btn')[0].classList.add('active');
-        document.getElementById('tab-home').classList.add('active');
-        document.getElementById('headerTitle').innerText = '東元資融';
-      } else if (scene === 'consumer') {
-        currentAuthState = 'CONSUMER';
-        document.getElementById('screen-consumer').classList.add('active');
-        document.querySelectorAll('.ctrl-btn')[1].classList.add('active');
-        document.getElementById('tab-home').classList.add('active');
-        document.getElementById('headerTitle').innerText = '東元資融';
-      } else if (scene === 'merchant') {
-        currentAuthState = 'MERCHANT';
-        document.getElementById('screen-merchant').classList.add('active');
-        document.querySelectorAll('.ctrl-btn')[2].classList.add('active');
-        document.getElementById('tab-profile').classList.add('active');
-        document.getElementById('headerTitle').innerText = '特約商工作台';
-        renderOrders();
-      }
-
-      updateNavBarForAuth();
-    }
-
-    function updateNavBarForAuth() {
-      const profileText = document.getElementById('profileTabText');
-      const profileIcon = document.getElementById('profileTabIcon');
-      if (currentAuthState === 'MERCHANT') {
-        profileText.innerText = '特約商台';
-        profileIcon.innerText = '🏍️';
-      } else {
-        profileText.innerText = '我的帳戶';
-        profileIcon.innerText = '👤';
-      }
     }
 
     function openAuthModal(defaultRole) {
@@ -1679,33 +1716,17 @@
       openModal('auth-modal');
     }
 
-    function switchAuthTab(role) {
-      const btnConsumer = document.getElementById('authTabConsumer');
-      const btnMerchant = document.getElementById('authTabMerchant');
-      const fldConsumer = document.getElementById('consumerAuthFields');
-      const fldMerchant = document.getElementById('merchantAuthFields');
-
-      if (role === 'consumer') {
-        btnConsumer.classList.add('active');
-        btnMerchant.classList.remove('active');
-        fldConsumer.style.display = 'block';
-        fldMerchant.style.display = 'none';
-      } else {
-        btnMerchant.classList.add('active');
-        btnConsumer.classList.remove('active');
-        fldMerchant.style.display = 'block';
-        fldConsumer.style.display = 'none';
-      }
+    function copyReferralCode() {
+      navigator.clipboard.writeText('TECO888').then(() => {
+        alert('🎉 專屬推薦碼【TECO888】已複製！');
+      });
     }
 
-    function executeLogin(role) {
-      closeModal('auth-modal');
-      if (role === 'consumer') {
-        alert('🎉 登入成功！已為您載入跨品牌合約帳單。');
-        switchScene('consumer');
-      } else {
-        alert('🎉 歡迎特約商【冠宇重機精品】！已登入門市行動工作台。');
-        switchScene('merchant');
+    function executeLogout() {
+      if (confirm('確定要登出帳號嗎？')) {
+        currentAuthState = 'GUEST';
+        switchScene('guest');
+        alert('您已安全登出。');
       }
     }
 
@@ -1721,12 +1742,10 @@
     function copyVirtualAccount() {
       navigator.clipboard.writeText('9823488219923').then(() => {
         alert('已複製玉山銀行專屬虛擬帳號：98234-8821-9923！');
-      }).catch(() => {
-        alert('專屬虛擬帳號：98234-8821-9923 (玉山銀行 808)');
       });
     }
 
-    // 輪播 Banner 自動輪播
+    // 輪播 Banner
     let currentSlide = 0;
     const totalSlides = 3;
     function nextSlide() {
