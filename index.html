@@ -251,7 +251,7 @@
           </div>
         </div>
 
-        <!-- 帳單中心入口卡片 (引導單一訂單繳費) -->
+        <!-- 帳單中心入口卡片 -->
         <div class="card" style="border-left: 4px solid var(--primary); padding: 14px;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
             <span style="font-size: 13px; font-weight: 700; color: var(--text-muted);">進行中未繳清訂單 (3 筆)</span>
@@ -466,7 +466,7 @@
          全域彈窗集合 (Modals)
          ========================================== -->
 
-    <!-- 1. 會員登入 / 註冊彈窗 -->
+    <!-- 1. 會員登入 / 註冊彈窗 (新增「忘記密碼」入口) -->
     <div id="login-modal" class="modal-overlay" onclick="closeModal('login-modal')">
       <div class="modal-content" onclick="event.stopPropagation()">
         <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">會員登入 / 註冊</h3>
@@ -475,18 +475,54 @@
           <label style="font-size: 11px; font-weight: 700;">手機號碼</label>
           <input type="tel" class="form-control" placeholder="0912-345-678" value="0912345678">
         </div>
-        <div style="margin-bottom: 12px; text-align: left;">
-          <label style="font-size: 11px; font-weight: 700;">密碼 / 簡訊驗證碼</label>
+        <div style="margin-bottom: 4px; text-align: left;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+            <label style="font-size: 11px; font-weight: 700;">登入密碼</label>
+            <!-- 新增「忘記密碼」入口 -->
+            <a href="javascript:void(0)" style="font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 700;" onclick="closeModal('login-modal'); openModal('forgot-password-modal');">
+              忘記密碼？
+            </a>
+          </div>
           <input type="password" class="form-control" placeholder="請輸入密碼" value="password123">
         </div>
-        <button class="btn-main" onclick="executeLogin()">登入帳戶</button>
+        <button class="btn-main" style="margin-top: 12px;" onclick="executeLogin()">登入帳戶</button>
         <div style="margin-top: 12px; font-size: 11px; color: var(--text-muted);">
           已有線下合約？ <a href="javascript:void(0)" style="color: var(--primary); font-weight: 700;" onclick="closeModal('login-modal'); openModal('claim-account-modal');">線上認領合約帳戶 ›</a>
         </div>
       </div>
     </div>
 
-    <!-- 2. 線上認領帳戶彈窗 -->
+    <!-- 2. 忘記密碼彈窗 (NEW) -->
+    <div id="forgot-password-modal" class="modal-overlay" onclick="closeModal('forgot-password-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+        <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">忘記密碼 / 重設密碼</h3>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">請輸入註冊手機號碼，系統將發送簡訊驗證碼以重設密碼</p>
+        
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">手機號碼</label>
+          <div style="display: flex; gap: 6px;">
+            <input type="tel" class="form-control" placeholder="09xx-xxx-xxx" value="0912345678" style="flex: 1;">
+            <button class="badge badge-blue" style="border: none; padding: 0 10px; cursor: pointer;" onclick="alert('簡訊驗證碼已發送至您的手機！')">發送驗證碼</button>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">簡訊驗證碼 (OTP)</label>
+          <input type="text" class="form-control" placeholder="6 位數字驗證碼" value="123456">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; font-weight: 700;">設定新密碼</label>
+          <input type="password" class="form-control" placeholder="請輸入 8~16 位英文數字新密碼">
+        </div>
+
+        <button class="btn-main" onclick="closeModal('forgot-password-modal'); openModal('login-modal'); alert('密碼重設成功！請使用新密碼重新登入。');">
+          確認重設密碼
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. 線上認領帳戶彈窗 -->
     <div id="claim-account-modal" class="modal-overlay" onclick="closeModal('claim-account-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">既有客戶線上「認領帳戶」</h3>
@@ -505,7 +541,7 @@
       </div>
     </div>
 
-    <!-- 3. 帳單中心主彈窗 (第一層：展示所有未繳清訂單卡片) -->
+    <!-- 4. 帳單中心主彈窗 -->
     <div id="billing-center-modal" class="modal-overlay" onclick="closeModal('billing-center-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
@@ -520,12 +556,11 @@
           ⚠️ <strong>繳款須知：</strong> 因各訂單之公司別與銀行帳戶獨立，無法合為單一條碼。請點選訂單後勾選要繳納的期數，產出該訂單之專屬條碼或匯款帳號。
         </div>
 
-        <!-- 訂單列表容器 -->
         <div id="billingOrderCardsContainer"></div>
       </div>
     </div>
 
-    <!-- 4. 單一訂單期數明細與勾選彈窗 (第二層：勾選要繳期數並產出條碼/帳號) -->
+    <!-- 5. 單一訂單期數明細與勾選彈窗 -->
     <div id="order-period-modal" class="modal-overlay" onclick="closeModal('order-period-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 8px;">
@@ -538,11 +573,8 @@
         </div>
 
         <div style="font-size: 12px; font-weight: 700; color: #334155; margin-bottom: 6px;">請勾選本次要繳納的期數：</div>
-
-        <!-- 各期明細勾選清單 -->
         <div id="periodCheckboxList" style="max-height: 240px; overflow-y: auto; margin-bottom: 12px;"></div>
 
-        <!-- 本次合計金額卡片 -->
         <div style="background: #1E293B; color: white; border-radius: 12px; padding: 12px; margin-bottom: 12px;">
           <div style="display: flex; justify-content: space-between; font-size: 12px; opacity: 0.85;">
             <span>已選期數：<span id="selectedPeriodCountText">1</span> 期</span>
@@ -562,7 +594,7 @@
       </div>
     </div>
 
-    <!-- 5. 專屬訂單條碼展示彈窗 (第三層) -->
+    <!-- 6. 專屬訂單條碼展示彈窗 -->
     <div id="single-order-barcode-modal" class="modal-overlay" onclick="closeModal('single-order-barcode-modal')">
       <div class="modal-content" onclick="event.stopPropagation()">
         <span class="badge badge-blue" id="barcodeResultBadge" style="margin-bottom: 4px;">東元資融 專屬條碼</span>
@@ -581,7 +613,7 @@
       </div>
     </div>
 
-    <!-- 6. 專屬訂單匯款帳號彈窗 (第三層) -->
+    <!-- 7. 專屬訂單匯款帳號彈窗 -->
     <div id="single-order-atm-modal" class="modal-overlay" onclick="closeModal('single-order-atm-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 2px;">💳 訂單專屬轉帳帳號</h3>
@@ -602,7 +634,7 @@
       </div>
     </div>
 
-    <!-- 7. 申請進度與歷史案件彈窗 -->
+    <!-- 8. 申請進度與歷史案件彈窗 -->
     <div id="apply-progress-modal" class="modal-overlay" onclick="closeModal('apply-progress-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -659,7 +691,7 @@
       </div>
     </div>
 
-    <!-- 8. 發票設定彈窗 -->
+    <!-- 9. 發票設定彈窗 -->
     <div id="invoice-settings-modal" class="modal-overlay" onclick="closeModal('invoice-settings-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
@@ -712,7 +744,7 @@
       </div>
     </div>
 
-    <!-- 9. DU 幣明細彈窗 -->
+    <!-- 10. DU 幣明細彈窗 -->
     <div id="ducoin-modal" class="modal-overlay" onclick="closeModal('ducoin-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <h3 style="font-size: 16px; font-weight: 800; margin-bottom: 4px;">🪙 我的 DU 幣</h3>
@@ -727,7 +759,7 @@
       </div>
     </div>
 
-    <!-- 10. 提高額度申請彈窗 -->
+    <!-- 11. 提高額度申請彈窗 -->
     <div id="increase-limit-modal" class="modal-overlay" onclick="closeModal('increase-limit-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">📈 提高額度申請</h3>
@@ -744,7 +776,7 @@
       </div>
     </div>
 
-    <!-- 11. 借款申請彈窗 -->
+    <!-- 12. 借款申請彈窗 -->
     <div id="loan-modal" class="modal-overlay" onclick="closeModal('loan-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">💰 東元速速貸 · 線上申請</h3>
@@ -764,7 +796,7 @@
       </div>
     </div>
 
-    <!-- 12. 客服彈窗 -->
+    <!-- 13. 客服彈窗 -->
     <div id="support-modal" class="modal-overlay" onclick="closeModal('support-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
@@ -781,27 +813,104 @@
       </div>
     </div>
 
-    <!-- 13. 系統設定彈窗 -->
+    <!-- 14. 系統設定彈窗 (增加密碼修改與個人資料變更) -->
     <div id="settings-modal" class="modal-overlay" onclick="closeModal('settings-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
-        <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 12px;">⚙️ 系統設定</h3>
-        <div class="card" style="padding: 10px; margin-bottom: 10px;">
-          <div style="display:flex; justify-content:space-between; margin-bottom:8px; font-size:12px;">
-            <span>生物辨識登入</span>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+          <h3 style="font-size: 15px; font-weight: 800;">⚙️ 系統設定</h3>
+          <span style="cursor: pointer; font-size: 13px; color: var(--text-muted);" onclick="closeModal('settings-modal')">✕ 關閉</span>
+        </div>
+        
+        <!-- 帳戶安全與個人設定 (NEW) -->
+        <div style="font-size: 11px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">個人帳號與安全性</div>
+        <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 10px;">
+          <!-- 個人資料變更入口 -->
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('profile-edit-modal')">
+            <span>👤 個人資料變更</span>
+            <span style="color:var(--text-muted); font-size:12px;">地址 / 信箱 ›</span>
+          </div>
+          <!-- 密碼修改入口 -->
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('change-password-modal')">
+            <span>🔑 密碼修改</span>
+            <span style="color:var(--text-muted); font-size:12px;">修改密碼 ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600;">
+            <span>🔒 生物辨識登入</span>
             <span style="color:var(--green); font-weight:700;">已啟用</span>
           </div>
-          <div style="display:flex; justify-content:space-between; font-size:12px;">
-            <span>通知偏好 (App 推播)</span>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; font-size:13px; font-weight:600;">
+            <span>🔔 通知偏好 (App 推播)</span>
             <span style="color:var(--primary); font-weight:700;">已開啟</span>
           </div>
         </div>
+
         <button class="btn-main" style="background: white; color: var(--red); border: 1px solid #FECACA;" onclick="executeDeleteAccount()">
           ⚠ 刪除帳號 (商店上架必備)
         </button>
       </div>
     </div>
 
-    <!-- 14. 通知中心彈窗 -->
+    <!-- 15. 個人資料變更彈窗 (NEW) -->
+    <div id="profile-edit-modal" class="modal-overlay" onclick="closeModal('profile-edit-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+          <h3 style="font-size: 15px; font-weight: 800;">👤 個人資料變更</h3>
+          <span style="cursor: pointer; font-size: 13px; color: var(--text-muted);" onclick="closeModal('profile-edit-modal')">✕ 關閉</span>
+        </div>
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">請確認並更新您的常用聯絡資訊：</p>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">會員姓名 (身分證記載)</label>
+          <input type="text" class="form-control" value="林*憲 (嘟嘟)" disabled style="background: #F1F5F9;">
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">電子信箱 (接收帳單/通知)</label>
+          <input type="email" class="form-control" id="editEmailInput" value="user@example.com">
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">通訊地址 (發票/對帳單收件地)</label>
+          <input type="text" class="form-control" id="editAddressInput" value="新北市中和區中正路 888 號 5 樓">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; font-weight: 700;">緊急聯絡人姓名與電話</label>
+          <input type="text" class="form-control" value="黃小姐 / 0988-123-456">
+        </div>
+
+        <button class="btn-main" onclick="closeModal('profile-edit-modal'); alert('個人通訊資料已更新完成！');">儲存變更</button>
+      </div>
+    </div>
+
+    <!-- 16. 密碼修改彈窗 (NEW) -->
+    <div id="change-password-modal" class="modal-overlay" onclick="closeModal('change-password-modal')">
+      <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+          <h3 style="font-size: 15px; font-weight: 800;">🔑 密碼修改</h3>
+          <span style="cursor: pointer; font-size: 13px; color: var(--text-muted);" onclick="closeModal('change-password-modal')">✕ 關閉</span>
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">請輸入目前舊密碼</label>
+          <input type="password" class="form-control" placeholder="請輸入原密碼">
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700;">設定新密碼</label>
+          <input type="password" class="form-control" placeholder="8~16 位英文數字組合">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; font-weight: 700;">再次確認新密碼</label>
+          <input type="password" class="form-control" placeholder="請再次輸入新密碼">
+        </div>
+
+        <button class="btn-main" onclick="closeModal('change-password-modal'); alert('密碼修改成功！下次登入請使用新密碼。');">確認更新密碼</button>
+      </div>
+    </div>
+
+    <!-- 17. 通知中心彈窗 -->
     <div id="notification-modal" class="modal-overlay" onclick="closeModal('notification-modal')">
       <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
         <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 10px;">🔔 通知中心</h3>
@@ -938,7 +1047,7 @@
       updateSelectedPeriodSummary();
     }
 
-    // 勾選期數即時累計金額
+    // 勾選期數
     function togglePeriodSelect(idx, isChecked) {
       currentSelectedOrder.periods[idx].selected = isChecked;
       renderPeriodCheckboxes();
@@ -969,7 +1078,6 @@
       document.getElementById('barcodeResultPeriods').innerText = `已勾選繳納期數：${periodNames}`;
       document.getElementById('barcodeResultAmount').innerText = `NT$ ${totalAmount.toLocaleString()}`;
       
-      // 動態更新條碼編號尾數
       document.getElementById('barcodeLine1').innerText = `98210920${selected[0].period}85921`;
       document.getElementById('barcodeLine2').innerText = `00000${totalAmount}00000`;
 
@@ -1005,7 +1113,7 @@
       });
     }
 
-    // 設定情境角色
+    // 設定情境角色 (未登入訪客 vs 會員)
     function setMockRole(role) {
       currentRole = role;
 
