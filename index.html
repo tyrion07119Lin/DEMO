@@ -23,7 +23,7 @@
     body { background-color: #0B0F19; display: flex; flex-direction: column; align-items: center; min-height: 100vh; color: var(--text); }
 
     /* ==========================================
-       全域內測人員專用提示彈窗樣式 (明顯區隔於 App 內)
+       全域內測人員專用提示彈窗樣式
        ========================================== */
     .internal-notice-overlay {
       position: fixed;
@@ -33,7 +33,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      z-index: 99999; /* 最頂層 */
+      z-index: 99999;
       padding: 20px;
       animation: fadeInNotice 0.25s ease-out;
     }
@@ -80,12 +80,8 @@
       border-radius: 10px;
       margin-bottom: 16px;
     }
-    .internal-text-body p {
-      margin-bottom: 10px;
-    }
-    .internal-text-body p:last-child {
-      margin-bottom: 0;
-    }
+    .internal-text-body p { margin-bottom: 10px; }
+    .internal-text-body p:last-child { margin-bottom: 0; }
     .btn-internal-confirm {
       width: 100%;
       background: linear-gradient(135deg, #D97706, #F59E0B);
@@ -99,10 +95,7 @@
       box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
       transition: all 0.2s;
     }
-    .btn-internal-confirm:hover {
-      opacity: 0.95;
-      transform: translateY(-1px);
-    }
+    .btn-internal-confirm:hover { opacity: 0.95; transform: translateY(-1px); }
     @keyframes fadeInNotice {
       from { opacity: 0; transform: scale(0.96); }
       to { opacity: 1; transform: scale(1); }
@@ -154,8 +147,23 @@
     }
     .status-bar .notch { width: 100px; height: 22px; background: #000; border-radius: 20px; }
 
+    /* 內容容器區 */
+    .app-screen-container {
+      flex: 1;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
     /* 主內容區 */
-    .app-screen { flex: 1; overflow-y: auto; padding: 14px; display: none; padding-bottom: 24px; }
+    .app-screen {
+      flex: 1;
+      overflow-y: auto;
+      padding: 14px;
+      display: none;
+      padding-bottom: 24px;
+    }
     .app-screen.active { display: block; }
 
     /* 通用卡片與項目 */
@@ -174,7 +182,7 @@
     }
     .btn-main:active { opacity: 0.85; }
 
-    /* 頂部宣傳跑馬燈 */
+    /* 頂部跑馬燈 */
     .marquee-container {
       background: linear-gradient(90deg, #1E3A8A, #2563EB);
       color: white;
@@ -245,12 +253,49 @@
       background: repeating-linear-gradient(90deg, #000, #000 2px, #fff 2px, #fff 4px, #000 4px, #000 7px);
       margin-bottom: 3px;
     }
+
+    /* 底部導覽功能列 */
+    .bottom-nav-bar {
+      height: 60px;
+      background: #FFFFFF;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      flex-shrink: 0;
+      z-index: 50;
+      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.04);
+    }
+    .bottom-nav-item {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 0;
+    }
+    .bottom-nav-item .nav-icon {
+      font-size: 20px;
+      line-height: 1;
+    }
+    .bottom-nav-item.active {
+      color: var(--primary);
+    }
+    .bottom-nav-item.active .nav-icon {
+      transform: scale(1.1);
+    }
   </style>
 </head>
 <body>
 
   <!-- ==========================================
-       內測人員專用提示彈窗 (畫面開啟時自動顯示)
+       內測人員專用提示彈窗
        ========================================== -->
   <div id="internal-tester-notice" class="internal-notice-overlay">
     <div class="internal-notice-card">
@@ -258,12 +303,11 @@
       <h3 class="internal-title">東元資融 App 模擬版本說明</h3>
       
       <div class="internal-text-body">
-        <p>模擬版本說明，<br>基於銀角與 DUDUPAY 功能比較設計，<br>依上次會議中討論安排三階段製作。<br>後續再視情況調整。</p>
-        <p><strong style="color: #60A5FA;">本次版本為第一階段：</strong>全東元品牌客人繳費及查看案件情況使用，且使用 APP 強制申辦會員帳號。</p>
+        <p>本次版本已完成以下需求調整：</p>
+        <p><strong style="color: #60A5FA;">1. 額度架構重整：</strong>移除頂部大額度卡片，將額度功能移入「額度與回饋」一般列，點選進入後可切換「我的額度」與「提升額度」。</p>
+        <p><strong style="color: #60A5FA;">2. 原車原融獨立頁面：</strong>底部新增功能列（我的 / 原融），提供原車原融試算、專屬申辦及車輛融資案件進度追蹤。</p>
         <p style="color: #94A3B8; font-size: 12px; margin-top: 8px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 8px;">
-          銀角 APP 功能拆解，可參考「銀角功能介面參考」文件。<br>
-          如未取得該文件，或本次版本有優化建議，<br>
-          請與產規部聯絡，謝謝。
+          如對介面動線有優化建議，請隨時與產規部聯絡，謝謝。
         </p>
       </div>
 
@@ -289,175 +333,373 @@
       <span>5G 85%</span>
     </div>
 
-    <!-- ==========================================
-         畫面 0：首次開啟未登入全螢幕門禁
-         ========================================== -->
-    <section id="screen-auth-gate" class="app-screen active">
-      <div class="marquee-container">
-        <div class="marquee-content">
-          📢 東元資融官方公告：線上認領帳戶即享超商繳款條碼｜線上申辦循環額度最快當日放款｜官方通知請認明 App 推播防詐騙
-        </div>
-      </div>
+    <div class="app-screen-container">
 
-      <div style="text-align: center; margin: 20px 0 24px 0;">
-        <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1E3A8A, #3B82F6); border-radius: 18px; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white;">
-          💳
-        </div>
-        <h2 style="font-size: 20px; font-weight: 900; color: var(--primary);">東元資融</h2>
-        <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">會員專屬跨品牌分期與帳務服務</p>
-      </div>
-
-      <div class="card" style="padding: 18px 16px;">
-        <div style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">會員帳號登入</div>
-        <div style="margin-bottom: 10px; text-align: left;">
-          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">手機號碼 / 帳號</label>
-          <input type="tel" class="form-control" id="gateLoginPhone" placeholder="0912-345-678" value="0912345678">
-        </div>
-        <div style="margin-bottom: 6px; text-align: left;">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
-            <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">密碼</label>
-            <a href="javascript:void(0)" style="font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 700;" onclick="openModal('forgot-password-modal')">忘記密碼？</a>
+      <!-- ==========================================
+           畫面 0：首次開啟未登入全螢幕門禁
+           ========================================== -->
+      <section id="screen-auth-gate" class="app-screen active">
+        <div class="marquee-container">
+          <div class="marquee-content">
+            📢 東元資融官方公告：線上認領帳戶即享超商繳款條碼｜線上申辦循環額度最快當日放款｜官方通知請認明 App 推播防詐騙
           </div>
-          <input type="password" class="form-control" id="gateLoginPassword" placeholder="請輸入密碼" value="password123">
         </div>
-        <button class="btn-main" style="margin-top: 14px;" onclick="executeGateLogin()">登入專屬帳戶</button>
-      </div>
 
-      <div class="card" style="background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border-color: #BFDBFE; padding: 16px;">
-        <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">已有線下車貸或特約商分期合約？</div>
-        <div style="font-size: 11px; color: #1E3A8A; line-height: 1.4; margin-bottom: 12px;">
-          舊客戶首次使用無須重新註冊，請驗證身分證字號與手機直接找回並認領帳戶。
+        <div style="text-align: center; margin: 20px 0 24px 0;">
+          <div style="width: 60px; height: 60px; background: linear-gradient(135deg, #1E3A8A, #3B82F6); border-radius: 18px; margin: 0 auto 10px auto; display: flex; align-items: center; justify-content: center; font-size: 28px; color: white;">
+            💳
+          </div>
+          <h2 style="font-size: 20px; font-weight: 900; color: var(--primary);">東元資融</h2>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">會員專屬跨品牌分期與帳務服務</p>
         </div>
-        <button class="btn-main" style="background: #059669;" onclick="openModal('claim-account-modal')">
-          🔍 舊客戶找回 / 線上認領帳號
+
+        <div class="card" style="padding: 18px 16px;">
+          <div style="font-size: 14px; font-weight: 800; margin-bottom: 12px;">會員帳號登入</div>
+          <div style="margin-bottom: 10px; text-align: left;">
+            <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">手機號碼 / 帳號</label>
+            <input type="tel" class="form-control" id="gateLoginPhone" placeholder="0912-345-678" value="0912345678">
+          </div>
+          <div style="margin-bottom: 6px; text-align: left;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px;">
+              <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">密碼</label>
+              <a href="javascript:void(0)" style="font-size: 11px; color: var(--primary); text-decoration: none; font-weight: 700;" onclick="openModal('forgot-password-modal')">忘記密碼？</a>
+            </div>
+            <input type="password" class="form-control" id="gateLoginPassword" placeholder="請輸入密碼" value="password123">
+          </div>
+          <button class="btn-main" style="margin-top: 14px;" onclick="executeGateLogin()">登入專屬帳戶</button>
+        </div>
+
+        <div class="card" style="background: linear-gradient(135deg, #EFF6FF, #DBEAFE); border-color: #BFDBFE; padding: 16px;">
+          <div style="font-size: 13px; font-weight: 800; color: var(--primary); margin-bottom: 4px;">已有線下車貸或特約商分期合約？</div>
+          <div style="font-size: 11px; color: #1E3A8A; line-height: 1.4; margin-bottom: 12px;">
+            舊客戶首次使用無須重新註冊，請驗證身分證字號與手機直接找回並認領帳戶。
+          </div>
+          <button class="btn-main" style="background: #059669;" onclick="openModal('claim-account-modal')">
+            🔍 舊客戶找回 / 線上認領帳號
+          </button>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           畫面 1：會員核心專區 (我的)
+           ========================================== -->
+      <section id="screen-profile" class="app-screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <span style="font-size: 18px; font-weight: 900; color: var(--primary);">東元資融</span>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="position: relative; cursor: pointer;" onclick="openModal('notification-modal')">
+              <span style="font-size: 19px;">🔔</span>
+              <span style="position: absolute; top: -2px; right: -2px; background: var(--red); width: 8px; height: 8px; border-radius: 50%;"></span>
+            </div>
+            <span style="font-size: 18px; cursor: pointer;" onclick="openModal('settings-modal')">⚙️</span>
+          </div>
+        </div>
+
+        <!-- 歡迎詞與 L2 認證 -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; padding: 0 2px;">
+          <div style="font-size: 17px; font-weight: 900; color: #0F172A;">
+            嘟嘟 您好 👋
+          </div>
+          <span class="badge badge-green" style="font-size: 11px; padding: 3px 8px;">L2 實名認證</span>
+        </div>
+
+        <!-- 雙併獨立功能大卡片：左邊 DU 幣、右邊帳單中心 -->
+        <div class="feature-action-grid">
+          <div class="feature-card-btn" style="border-left: 4px solid var(--ducoin);" onclick="openModal('ducoin-modal')">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">我的 DU 幣</span>
+              <span style="font-size: 16px;">🪙</span>
+            </div>
+            <div style="font-size: 20px; font-weight: 900; color: #B45309; margin-bottom: 4px;">
+              50 幣
+            </div>
+            <div style="font-size: 11px; color: var(--ducoin); font-weight: 700;">
+              查看收支歷程 ›
+            </div>
+          </div>
+
+          <div class="feature-card-btn" style="border-left: 4px solid var(--primary);" onclick="openBillingCenterModal()">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">帳單中心</span>
+              <span style="font-size: 16px;">🧾</span>
+            </div>
+            <div style="font-size: 18px; font-weight: 900; color: var(--primary); margin-bottom: 4px;">
+              3 筆待繳
+            </div>
+            <div style="font-size: 11px; color: var(--primary); font-weight: 700;">
+              查看未繳訂單 ›
+            </div>
+          </div>
+        </div>
+
+        <!-- 案件與帳務管理 -->
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">案件與帳務管理</div>
+        <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 14px;">
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('apply-progress-modal')">
+            <span>⏳ 申請進度 (審核中/補件)</span>
+            <span style="color:var(--red); font-size:11px; font-weight: 700;">1 件待補件 ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('history-cases-modal')">
+            <span>📁 歷史案件 (全部狀態與明細)</span>
+            <span style="color:var(--text-muted); font-size:12px;">查看全部 ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; font-size:13px; font-weight:600; cursor:pointer;" onclick="alert('退款帳號設定：目前綁定玉山銀行尾號 8821')">
+            <span>🏦 退款帳號設定</span>
+            <span style="color:var(--text-muted); font-size:12px;">已綁定 ›</span>
+          </div>
+        </div>
+
+        <!-- 額度與回饋 (整併額度一列，移入此區) -->
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">額度與回饋</div>
+        <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 14px;">
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openCreditModal('overview')">
+            <span>💳 額度</span>
+            <div style="display:flex; align-items:center; gap:6px;">
+              <span style="font-size: 11px; color: var(--text-muted);">可用 $45,000</span>
+              <span style="color:var(--primary); font-size:12px;">管理 / 提額 ›</span>
+            </div>
+          </div>
+          <div style="display:flex; justify-content:space-between; align-items:center; padding:12px 14px; font-size:13px; font-weight:600; cursor:pointer;" onclick="copyInviteCode()">
+            <span>👥 邀請好友賺 DU 幣</span>
+            <span class="badge badge-orange">推薦碼 DUDU888 (複製)</span>
+          </div>
+        </div>
+
+        <!-- 協助與支援 -->
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">協助與支援</div>
+        <div class="card" style="padding: 0; overflow: hidden; margin-bottom: 12px;">
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('support-modal')">
+            <span>💬 客服中心 (在線對話 9:00-18:00)</span>
+            <span style="color:var(--green); font-size:11px; font-weight: 700;">在線服務 ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="alert('常見問與答：依身份「我是客人」分類')">
+            <span>❓ 常見問與答</span>
+            <span style="color:var(--text-muted); font-size:12px;">查看 ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="alert('教學指南：新手申請攻略')">
+            <span>📖 教學指南</span>
+            <span style="color:var(--text-muted); font-size:12px;">閱讀 ›</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; padding:12px 14px; font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('invoice-settings-modal')">
+            <span>🧾 發票設定 (載具/紙本/捐贈)</span>
+            <span style="color:var(--primary); font-size:12px;" id="currentInvoiceCarrierDisplay">手機條碼 ›</span>
+          </div>
+        </div>
+
+        <button class="btn-main" style="background: white; color: var(--red); border: 1px solid #FECACA; margin-top: 4px;" onclick="executeLogout()">
+          安全登出帳號
         </button>
-      </div>
-    </section>
+      </section>
+
+      <!-- ==========================================
+           畫面 2：原車原融專區 (原融)
+           ========================================== -->
+      <section id="screen-refinance" class="app-screen">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <div>
+            <span style="font-size: 18px; font-weight: 900; color: var(--primary);">原車原融專區</span>
+            <p style="font-size: 11px; color: var(--text-muted); margin-top: 2px;">汽機車融資週轉 ｜ 原車照常開 ｜ 免留車</p>
+          </div>
+          <span class="badge badge-blue">專人快速試算</span>
+        </div>
+
+        <!-- 試算大卡片 -->
+        <div class="card" style="background: linear-gradient(135deg, #1E3A8A, #1E40AF); color: white; padding: 16px; margin-bottom: 12px;">
+          <div style="font-size: 13px; font-weight: 800; color: #93C5FD; margin-bottom: 2px;">車輛快速鑑價試算</div>
+          <div style="font-size: 22px; font-weight: 900; color: #FBBF24; margin-bottom: 12px;">最高可貸車價 150%</div>
+          
+          <div style="background: rgba(255,255,255,0.08); border-radius: 10px; padding: 12px; margin-bottom: 12px;">
+            <div style="margin-bottom: 8px;">
+              <label style="font-size: 11px; color: #CBD5E1;">車輛類型</label>
+              <div style="display: flex; gap: 8px; margin-top: 4px;">
+                <button type="button" class="btn-main" id="btnVehicleMoto" style="padding: 6px; font-size: 12px; background: white; color: var(--primary);" onclick="selectVehicleType('moto')">🛵 機車原融</button>
+                <button type="button" class="btn-main" id="btnVehicleCar" style="padding: 6px; font-size: 12px; background: rgba(255,255,255,0.2); color: white;" onclick="selectVehicleType('car')">🚗 汽車原融</button>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 8px;">
+              <label style="font-size: 11px; color: #CBD5E1;">車牌號碼 (例：ABC-8888)</label>
+              <input type="text" class="form-control" id="refinancePlateNumber" placeholder="請輸入車牌號碼" value="MHV-2901" style="background: white; margin-top: 3px;">
+            </div>
+
+            <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+              <div style="flex: 1;">
+                <label style="font-size: 11px; color: #CBD5E1;">出廠年份</label>
+                <select class="form-control" style="background: white; margin-top: 3px;">
+                  <option>2023 年</option>
+                  <option selected>2022 年</option>
+                  <option>2021 年</option>
+                  <option>2020 年</option>
+                  <option>2019 年前</option>
+                </select>
+              </div>
+              <div style="flex: 1;">
+                <label style="font-size: 11px; color: #CBD5E1;">期望融資額度</label>
+                <input type="text" class="form-control" value="NT$ 80,000" style="background: white; margin-top: 3px;">
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-main" style="background: #F59E0B; color: #0F172A; font-weight: 900;" onclick="submitRefinanceEstimate()">
+            ⚡ 立即取得線上快速預估核貸額度
+          </button>
+        </div>
+
+        <!-- 原融核心優勢 -->
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">原融產品特色</div>
+        <div class="card" style="padding: 12px; margin-bottom: 12px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size: 20px;">⚡</span>
+              <div>
+                <div style="font-size: 12px; font-weight: 800;">快速核准</div>
+                <div style="font-size: 10px; color: var(--text-muted);">最快當日撥款</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size: 20px;">🔑</span>
+              <div>
+                <div style="font-size: 12px; font-weight: 800;">免留車輛</div>
+                <div style="font-size: 10px; color: var(--text-muted);">愛車照常使用</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size: 20px;">📄</span>
+              <div>
+                <div style="font-size: 12px; font-weight: 800;">線上對保</div>
+                <div style="font-size: 10px; color: var(--text-muted);">全程數位化免跑門市</div>
+              </div>
+            </div>
+            <div style="display:flex; align-items:center; gap:8px;">
+              <span style="font-size: 20px;">💰</span>
+              <div>
+                <div style="font-size: 12px; font-weight: 800;">期數靈活</div>
+                <div style="font-size: 10px; color: var(--text-muted);">最長可分 36 期</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 進行中的原融案件 -->
+        <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">我的現有原融案件</div>
+        <div class="card" style="border-left: 4px solid var(--primary); padding: 12px; margin-bottom: 12px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span class="badge badge-blue">東元資融</span>
+            <span class="badge badge-green">履約中</span>
+          </div>
+          <div style="font-size: 13px; font-weight: 800; margin: 6px 0 2px 0;">光陽 KRV 180 原融貸款</div>
+          <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5;">
+            合約編號：#TECO-KYMCO-8821<br>
+            目前期數：14 / 24 期 ｜ 每期金額：NT$ 4,500<br>
+            剩餘未繳本息：NT$ 45,000
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 10px;">
+            <button class="btn-main" style="padding: 7px; font-size: 11px; background: #EFF6FF; color: var(--primary); border: 1px solid #BFDBFE;" onclick="switchMainTab('profile'); openBillingCenterModal();">
+              前往帳單中心繳費
+            </button>
+            <button class="btn-main" style="padding: 7px; font-size: 11px; background: white; color: #059669; border: 1px solid #A7F3D0;" onclick="openUploadPaymentProofModal('光陽 KRV 原融 (#TECO-KYMCO-8821)')">
+              上傳小白單
+            </button>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
 
     <!-- ==========================================
-         畫面 1：會員核心專區 (主畫面)
+         底部固定功能導覽列 (未登入隱藏，登入後顯示)
          ========================================== -->
-    <section id="screen-profile" class="app-screen">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-        <span style="font-size: 18px; font-weight: 900; color: var(--primary);">東元資融</span>
-        <div style="display: flex; align-items: center; gap: 12px;">
-          <div style="position: relative; cursor: pointer;" onclick="openModal('notification-modal')">
-            <span style="font-size: 19px;">🔔</span>
-            <span style="position: absolute; top: -2px; right: -2px; background: var(--red); width: 8px; height: 8px; border-radius: 50%;"></span>
-          </div>
-          <span style="font-size: 18px; cursor: pointer;" onclick="openModal('settings-modal')">⚙️</span>
-        </div>
+    <nav class="bottom-nav-bar" id="appBottomNav" style="display: none;">
+      <div class="bottom-nav-item active" id="tabNavProfile" onclick="switchMainTab('profile')">
+        <span class="nav-icon">👤</span>
+        <span>我的</span>
       </div>
-
-      <!-- 歡迎詞與 L2 認證 -->
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 0 2px;">
-        <div style="font-size: 17px; font-weight: 900; color: #0F172A;">
-          嘟嘟 您好 👋
-        </div>
-        <span class="badge badge-green" style="font-size: 11px; padding: 3px 8px;">L2 實名認證</span>
+      <div class="bottom-nav-item" id="tabNavRefinance" onclick="switchMainTab('refinance')">
+        <span class="nav-icon">🛵</span>
+        <span>原融</span>
       </div>
-
-      <!-- 極簡額度卡片 -->
-      <div class="card" style="background: linear-gradient(135deg, #1E293B, #0F172A); color: white; margin-bottom: 12px; padding: 16px;">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-          <span style="font-size: 12px; opacity: 0.85;">目前可用額度</span>
-          <a href="javascript:void(0)" style="color: #93C5FD; font-weight: 700; font-size: 12px; text-decoration: none;" onclick="openModal('increase-limit-modal')">提高額度申請 ›</a>
-        </div>
-        <div style="font-size: 30px; font-weight: 900; color: #60A5FA; margin-top: 6px;">
-          NT$ 45,000
-        </div>
-      </div>
-
-      <!-- 雙併獨立功能大卡片：左邊 DU 幣、右邊帳單中心 -->
-      <div class="feature-action-grid">
-        <div class="feature-card-btn" style="border-left: 4px solid var(--ducoin);" onclick="openModal('ducoin-modal')">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">我的 DU 幣</span>
-            <span style="font-size: 16px;">🪙</span>
-          </div>
-          <div style="font-size: 20px; font-weight: 900; color: #B45309; margin-bottom: 4px;">
-            50 幣
-          </div>
-          <div style="font-size: 11px; color: var(--ducoin); font-weight: 700;">
-            查看收支歷程 ›
-          </div>
-        </div>
-
-        <div class="feature-card-btn" style="border-left: 4px solid var(--primary);" onclick="openBillingCenterModal()">
-          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
-            <span style="font-size: 12px; font-weight: 700; color: var(--text-muted);">帳單中心</span>
-            <span style="font-size: 16px;">🧾</span>
-          </div>
-          <div style="font-size: 18px; font-weight: 900; color: var(--primary); margin-bottom: 4px;">
-            3 筆待繳
-          </div>
-          <div style="font-size: 11px; color: var(--primary); font-weight: 700;">
-            查看未繳訂單 ›
-          </div>
-        </div>
-      </div>
-
-      <!-- 案件與帳務管理 -->
-      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">案件與帳務管理</div>
-      <div class="card" style="padding: 0; overflow: hidden;">
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('apply-progress-modal')">
-          <span>⏳ 申請進度 (審核中/補件)</span>
-          <span style="color:var(--red); font-size:11px; font-weight: 700;">1 件待補件 ›</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('history-cases-modal')">
-          <span>📁 歷史案件 (全部狀態與明細)</span>
-          <span style="color:var(--text-muted); font-size:12px;">查看全部 ›</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('increase-limit-modal')">
-          <span>📈 提高額度申請</span>
-          <span style="color:var(--primary); font-size:12px;">線上申辦 ›</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; font-size:13px; font-weight:600; cursor:pointer;" onclick="alert('退款帳號設定：目前綁定玉山銀行尾號 8821')">
-          <span>🏦 退款帳號設定</span>
-          <span style="color:var(--text-muted); font-size:12px;">已綁定 ›</span>
-        </div>
-      </div>
-
-      <!-- 回饋與推廣 -->
-      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">回饋與推廣</div>
-      <div class="card" style="padding: 0; overflow: hidden;">
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; font-size:13px; font-weight:600; cursor:pointer;" onclick="copyInviteCode()">
-          <span>👥 邀請好友賺 DU 幣</span>
-          <span class="badge badge-orange">推薦碼 DUDU888 (複製)</span>
-        </div>
-      </div>
-
-      <!-- 協助與支援 -->
-      <div style="font-size: 12px; font-weight: 700; color: var(--text-muted); margin-bottom: 6px;">協助與支援</div>
-      <div class="card" style="padding: 0; overflow: hidden;">
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('support-modal')">
-          <span>💬 客服中心 (在線對話 9:00-18:00)</span>
-          <span style="color:var(--green); font-size:11px; font-weight: 700;">在線服務 ›</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="alert('常見問與答：依身份「我是客人」分類')">
-          <span>❓ 常見問與答</span>
-          <span style="color:var(--text-muted); font-size:12px;">查看 ›</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; border-bottom:1px solid var(--border); font-size:13px; font-weight:600; cursor:pointer;" onclick="alert('教學指南：新手申請攻略')">
-          <span>📖 教學指南</span>
-          <span style="color:var(--text-muted); font-size:12px;">閱讀 ›</span>
-        </div>
-        <div style="display:flex; justify-content:space-between; padding:12px 14px; font-size:13px; font-weight:600; cursor:pointer;" onclick="openModal('invoice-settings-modal')">
-          <span>🧾 發票設定 (載具/紙本/捐贈)</span>
-          <span style="color:var(--primary); font-size:12px;" id="currentInvoiceCarrierDisplay">手機條碼 ›</span>
-        </div>
-      </div>
-
-      <button class="btn-main" style="background: white; color: var(--red); border: 1px solid #FECACA; margin-top: 8px;" onclick="executeLogout()">
-        安全登出帳號
-      </button>
-    </section>
+    </nav>
 
   </main>
 
   <!-- ==========================================
        全域彈窗集合 (Modals)
        ========================================== -->
+
+  <!-- 0. 額度專用管理彈窗 (含 我的額度 / 提升額度 兩大功能) -->
+  <div id="credit-management-modal" class="modal-overlay" onclick="closeModal('credit-management-modal')">
+    <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 6px;">
+        <h3 style="font-size: 15px; font-weight: 800;">💳 會員額度管理</h3>
+        <span style="cursor: pointer; font-size: 13px; color: var(--text-muted);" onclick="closeModal('credit-management-modal')">✕ 關閉</span>
+      </div>
+
+      <!-- 次分頁切換 -->
+      <div class="sub-tab-bar">
+        <div class="sub-tab-item active" id="tabCreditOverview" onclick="switchCreditSubTab('overview')">我的額度</div>
+        <div class="sub-tab-item" id="tabCreditIncrease" onclick="switchCreditSubTab('increase')">提升額度</div>
+      </div>
+
+      <!-- 分頁 1：我的額度 -->
+      <div id="viewCreditOverview">
+        <div style="background: #F8FAFC; border: 1px solid var(--border); border-radius: 12px; padding: 14px; margin-bottom: 12px;">
+          <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">目前可用額度</div>
+          <div style="font-size: 26px; font-weight: 900; color: var(--primary); margin-bottom: 8px;">NT$ 45,000</div>
+          
+          <div style="border-top: 1px dashed var(--border); padding-top: 8px; font-size: 11px; color: #475569; line-height: 1.6;">
+            <div style="display:flex; justify-content:space-between;">
+              <span>核定總信用額度：</span>
+              <strong>NT$ 60,000</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>已動用額度：</span>
+              <strong style="color: var(--red);">NT$ 15,000</strong>
+            </div>
+            <div style="display:flex; justify-content:space-between;">
+              <span>額度有效期限：</span>
+              <span>2027/12/31</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="font-size: 11px; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px;">
+          💡 <strong>貼心提醒：</strong> 每期準時清償分期帳單後，系統將於入帳銷帳後即時自動釋回可用額度。
+        </div>
+
+        <button class="btn-main" onclick="switchCreditSubTab('increase')">
+          📈 額度不夠？申請提升額度 ›
+        </button>
+      </div>
+
+      <!-- 分頁 2：提升額度 -->
+      <div id="viewCreditIncrease" style="display: none;">
+        <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 10px;">
+          請填寫預計調升之目標額度並核對驗證身分，徵審團隊將即時評估。
+        </p>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">目前核准額度：</label>
+          <input type="text" class="form-control" value="NT$ 60,000" disabled style="background: #F1F5F9;">
+        </div>
+
+        <div style="margin-bottom: 8px;">
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">期望提升額度：</label>
+          <input type="text" class="form-control" style="font-weight: 800; color: var(--primary);" value="NT$ 100,000">
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">本人信用卡卡號 (徵信輔助核驗)：</label>
+          <input type="text" class="form-control" value="4892-8821-4901-2091">
+        </div>
+
+        <button class="btn-main" onclick="closeModal('credit-management-modal'); alert('提額申請已送出！徵審團隊將於 3 個工作天內完成評估並簡訊通知。');">
+          確認送出調額申請
+        </button>
+      </div>
+
+    </div>
+  </div>
 
   <!-- 1. 忘記密碼彈窗 -->
   <div id="forgot-password-modal" class="modal-overlay" onclick="closeModal('forgot-password-modal')">
@@ -875,23 +1117,6 @@
     </div>
   </div>
 
-  <!-- 13. 提高額度申請彈窗 -->
-  <div id="increase-limit-modal" class="modal-overlay" onclick="closeModal('increase-limit-modal')">
-    <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
-      <h3 style="font-size: 15px; font-weight: 800; margin-bottom: 4px;">📈 提高額度申請</h3>
-      <p style="font-size: 11px; color: var(--text-muted); margin-bottom: 12px;">目前核准額度 NT$ 60,000</p>
-      <div style="margin-bottom: 8px;">
-        <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">期望額度：</label>
-        <input type="text" class="form-control" style="font-weight: 800; color: var(--primary);" value="NT$ 100,000">
-      </div>
-      <div style="margin-bottom: 8px;">
-        <label style="font-size: 11px; font-weight: 700; color: var(--text-muted);">本人信用卡正卡卡號 (驗證用)：</label>
-        <input type="text" class="form-control" value="4892-8821-4901-2091">
-      </div>
-      <button class="btn-main" onclick="closeModal('increase-limit-modal'); alert('提額申請已送出！徵審團隊將於 3 個工作天內完成評估並通知。');">確認送出申請</button>
-    </div>
-  </div>
-
   <!-- 14. 客服彈窗 -->
   <div id="support-modal" class="modal-overlay" onclick="closeModal('support-modal')">
     <div class="modal-content" onclick="event.stopPropagation()" style="text-align: left;">
@@ -1017,13 +1242,13 @@
 
   <script>
     let currentRole = 'guest'; // 預設訪客模式
+    let currentMainTab = 'profile'; // profile | refinance
+    let selectedVehicle = 'moto'; // moto | car
 
     // 關閉內測專用提示彈窗
     function closeInternalNotice() {
       const noticeEl = document.getElementById('internal-tester-notice');
-      if (noticeEl) {
-        noticeEl.style.display = 'none';
-      }
+      if (noticeEl) noticeEl.style.display = 'none';
     }
 
     // 訂單資料庫
@@ -1084,14 +1309,90 @@
       document.getElementById('btnModeMember').classList.toggle('active', role === 'member');
 
       const gateScreen = document.getElementById('screen-auth-gate');
-      const profileScreen = document.getElementById('screen-profile');
+      const bottomNav = document.getElementById('appBottomNav');
 
       if (role === 'guest') {
         gateScreen.classList.add('active');
-        profileScreen.classList.remove('active');
+        document.getElementById('screen-profile').classList.remove('active');
+        document.getElementById('screen-refinance').classList.remove('active');
+        bottomNav.style.display = 'none';
       } else {
         gateScreen.classList.remove('active');
+        bottomNav.style.display = 'flex';
+        switchMainTab(currentMainTab);
+      }
+    }
+
+    // 主分頁切換 (我的 vs 原融)
+    function switchMainTab(tab) {
+      currentMainTab = tab;
+      const profileScreen = document.getElementById('screen-profile');
+      const refinanceScreen = document.getElementById('screen-refinance');
+      const navProfile = document.getElementById('tabNavProfile');
+      const navRefinance = document.getElementById('tabNavRefinance');
+
+      if (tab === 'profile') {
         profileScreen.classList.add('active');
+        refinanceScreen.classList.remove('active');
+        navProfile.classList.add('active');
+        navRefinance.classList.remove('active');
+      } else {
+        profileScreen.classList.remove('active');
+        refinanceScreen.classList.add('active');
+        navProfile.classList.remove('active');
+        navRefinance.classList.add('active');
+      }
+    }
+
+    // 原融頁面車型切換
+    function selectVehicleType(type) {
+      selectedVehicle = type;
+      const motoBtn = document.getElementById('btnVehicleMoto');
+      const carBtn = document.getElementById('btnVehicleCar');
+      const plateInput = document.getElementById('refinancePlateNumber');
+
+      if (type === 'moto') {
+        motoBtn.style.background = 'white';
+        motoBtn.style.color = 'var(--primary)';
+        carBtn.style.background = 'rgba(255,255,255,0.2)';
+        carBtn.style.color = 'white';
+        plateInput.value = 'MHV-2901';
+      } else {
+        carBtn.style.background = 'white';
+        carBtn.style.color = 'var(--primary)';
+        motoBtn.style.background = 'rgba(255,255,255,0.2)';
+        motoBtn.style.color = 'white';
+        plateInput.value = 'BNE-6789';
+      }
+    }
+
+    function submitRefinanceEstimate() {
+      const typeText = selectedVehicle === 'moto' ? '機車' : '汽車';
+      alert(`🎉 已收到您的 ${typeText} 原車原融鑑價試算！\n車牌：${document.getElementById('refinancePlateNumber').value}\n系統試算最高可核貸額度約 NT$ 120,000，專員將於 30 分鐘內電話聯繫為您說明。`);
+    }
+
+    // 額度管理彈窗切換 (我的額度 vs 提升額度)
+    function openCreditModal(subTab = 'overview') {
+      openModal('credit-management-modal');
+      switchCreditSubTab(subTab);
+    }
+
+    function switchCreditSubTab(tab) {
+      const tabOverview = document.getElementById('tabCreditOverview');
+      const tabIncrease = document.getElementById('tabCreditIncrease');
+      const viewOverview = document.getElementById('viewCreditOverview');
+      const viewIncrease = document.getElementById('viewCreditIncrease');
+
+      if (tab === 'overview') {
+        tabOverview.classList.add('active');
+        tabIncrease.classList.remove('active');
+        viewOverview.style.display = 'block';
+        viewIncrease.style.display = 'none';
+      } else {
+        tabOverview.classList.remove('active');
+        tabIncrease.classList.add('active');
+        viewOverview.style.display = 'none';
+        viewIncrease.style.display = 'block';
       }
     }
 
